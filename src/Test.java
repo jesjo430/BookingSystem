@@ -6,7 +6,8 @@ public class Test
 {
     public static void main(String[] args) {
 	Section test = new Section(10, 20);
+	SectionComponent sc = new SectionComponent(test);
 
-	new WindowFrame(test);
+	new WindowFrame(sc);
     }
 }
