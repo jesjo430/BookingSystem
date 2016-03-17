@@ -13,12 +13,12 @@ public class Seat
     public Seat(final int row, final int seat) {
 	this.row = row;
 	this.seat = seat;
-
+	this.status = false;
 	initialize();
     }
 
     private void initialize() {
-	this.status = true;
+	this.status = false;
 	this.name = null;
 	this.chairType = ChairType.SINGLE;
     }
@@ -27,7 +27,7 @@ public class Seat
 	this.status = status;
     }
 
-    public boolean getStatus() {
+    public boolean isBooked() {
 	return status;
     }
 

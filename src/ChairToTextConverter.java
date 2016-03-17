@@ -1,3 +1,7 @@
+/**
+ * test class to make it easier to evolve.
+ */
+
 public class ChairToTextConverter
 {
     public static String convertToText(Section section) {
@@ -18,11 +22,11 @@ public class ChairToTextConverter
     }
 
     private static StringBuilder seatStatus(Seat seat, StringBuilder stringbBuilder) {
-	if (seat.getStatus()) {
-	    stringbBuilder.append("T");
+	if (seat.isBooked()) {
+	    stringbBuilder.append("F");
 	}
 	else {
-	    stringbBuilder.append("F");
+	    stringbBuilder.append("T");
 	}
 	return stringbBuilder;
     }

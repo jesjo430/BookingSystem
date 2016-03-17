@@ -18,7 +18,7 @@ public class SectionComponent extends JComponent
     }
 
     private Color getSeatColorAt(int y, int x, Section section) {
-	if (section.getSeats()[y][x].getStatus()) {
+	if (section.getSeats()[y][x].isBooked()) {
 	    return Color.LIGHT_GRAY;
 	}
 	return Color.GRAY;
@@ -35,5 +35,9 @@ public class SectionComponent extends JComponent
 		g2d.fillRect(w*CHAIR_SIZE, h*CHAIR_SIZE, CHAIR_SIZE-(CHAIR_SIZE/2), CHAIR_SIZE-(CHAIR_SIZE/2));
 	    }
 	}
+    }
+
+    public Section getSection() {
+	return section;
     }
 }

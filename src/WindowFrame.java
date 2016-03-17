@@ -6,22 +6,15 @@ import javax.swing.*;
  */
 public class WindowFrame extends JFrame
 {
-    private JFrame frame;
     private static final int WINDOW_HEIGHT = 600;
     private static final int WINDOW_WIDTH = 900;
 
-    public WindowFrame(final SectionComponent section) {
-	this.frame = new JFrame("Window");
-	frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-	frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    public WindowFrame() {
+	super("MyFrame");
+	setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+	setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-	frame.add(section);
-	//addButtons();
 
-	frame.setVisible(true);
-    }
-
-    private void addButtons() {
-	frame.add(new JButton("Book All!"));
+	setVisible(true);
     }
 }

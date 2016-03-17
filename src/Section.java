@@ -9,7 +9,6 @@ public class Section
     public Section(final int height, final int width) {
 	this.height = height;
 	this.width = width;
-
 	initialize();
     }
 
@@ -19,6 +18,14 @@ public class Section
 	    for (int w = 0; w < seats[0].length; w++) {
 		seats[h][w] = new Seat(h, w);
 	    }
+	}
+    }
+
+    public void book(int row, int seat, String name) {
+	Seat place = seats[row][seat];
+	if (!place.isBooked()) {
+	    place.setStatus(true);
+	    place.setName(name);
 	}
     }
 
