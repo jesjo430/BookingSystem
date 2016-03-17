@@ -1,5 +1,4 @@
 import javax.swing.*;
-import net.miginfocom.*;
 
 /**
  * This class is the window of the program. It contains a section and components.
@@ -17,6 +16,7 @@ public class WindowFrame extends JFrame
 	frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 	frame.add(section);
+	//addButtons();
 
 	frame.setVisible(true);
     }
