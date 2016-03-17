@@ -6,6 +6,7 @@ public enum ChairType
 {
     /**
      * The standard chair with one seat.
+     * hehehe
      */
     SINGLE
 }
