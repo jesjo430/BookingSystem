@@ -10,25 +10,45 @@ import java.awt.*;
  */
 public class WindowFrame extends JFrame
 {
-    private static final int WINDOW_HEIGHT = 600;
-    private static final int WINDOW_WIDTH = 900;
+    public WindowFrame(SectionComponent sectionComp) {
+	JFrame frame = new JFrame("WindowTitle");
+	setWindowSettings();
 
-    private JFrame frame;
+	JPanel infoPanel = createInfoPanel();
+	JPanel sectionPanel = createSectionPanel(sectionComp);
 
+	Container contents = frame.getContentPane();
+	contents.add(infoPanel, BorderLayout.EAST);
+	contents.add(sectionComp, BorderLayout.CENTER);
 
-    public WindowFrame(SectionComponent section) {
-	super("MyFrame");
-	this.frame = new JFrame();
-	frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-	frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-	frame.add(new JButton("Left"), BorderLayout.WEST);
-	frame.add(new JButton("Center"), BorderLayout.CENTER);
-	frame.add(new JButton("Right"), BorderLayout.EAST);
-	frame.add(new JButton("Botton"), BorderLayout.SOUTH);
-
-	frame.setSize(300,300);
-
+	frame.setSize(500,500);
 	frame.setVisible(true);
+    }
+
+    private void setWindowSettings() {
+	setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    }
+
+    private JPanel createInfoPanel() {
+	JTextArea info = new JTextArea();
+	info.setText("JEIJDEIJDIEJ");
+	info.setEditable(false);
+
+	JLabel infoTitle = new JLabel("Info");
+
+	JPanel infoPanel = new JPanel();
+
+	infoPanel.add(infoTitle);
+	infoPanel.add(info);
+
+	return infoPanel;
+    }
+
+    private JPanel createSectionPanel(SectionComponent sectionComp) {
+	JPanel sectionPanel = new JPanel();
+
+	sectionPanel.add(sectionComp);
+
+	return sectionPanel;
     }
 }
