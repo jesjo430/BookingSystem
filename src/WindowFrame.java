@@ -12,21 +12,18 @@ public class WindowFrame extends JFrame
 {
     public WindowFrame(SectionComponent sectionComp) {
 	JFrame frame = new JFrame("WindowTitle");
-	setWindowSettings();
+	frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 	JPanel infoPanel = createInfoPanel();
-	JPanel sectionPanel = createSectionPanel(sectionComp);
 
 	Container contents = frame.getContentPane();
 	contents.add(infoPanel, BorderLayout.EAST);
-	contents.add(sectionComp, BorderLayout.CENTER);
+	//contents.add(sectionComp, BorderLayout.CENTER);
+	createSectionGrid(sectionComp, contents);
+
 
 	frame.setSize(500,500);
 	frame.setVisible(true);
-    }
-
-    private void setWindowSettings() {
-	setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
     private JPanel createInfoPanel() {
@@ -50,5 +47,16 @@ public class WindowFrame extends JFrame
 	sectionPanel.add(sectionComp);
 
 	return sectionPanel;
+    }
+
+    private void createSectionGrid(SectionComponent SectionComp, Container contents) {
+	Section section = SectionComp.getSection();
+	System.out.println(section.getWidth());
+	for (int h = 0; h < section.getHeight() ; h++) {
+	    for (int w = 0; w < section.getWidth(); w++) {
+		SeatComponent seatC = new SeatComponent(section.getSeatAt(h, w));
+		contents.add(seatC, BorderLayout.CENTER);
+	    }
+	}
     }
 }

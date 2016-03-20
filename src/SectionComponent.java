@@ -19,9 +19,9 @@ public class SectionComponent extends JComponent
 
     private Color getSeatColorAt(int y, int x, Section section) {
 	if (section.getSeats()[y][x].isBooked()) {
-	    return Color.LIGHT_GRAY;
+	    return Color.PINK;
 	}
-	return Color.GRAY;
+	return Color.BLACK;
     }
 
     protected void paintComponent(Graphics g) {
@@ -39,5 +39,9 @@ public class SectionComponent extends JComponent
 
     public Section getSection() {
 	return section;
+    }
+
+    public static int getChairSize() {
+	return CHAIR_SIZE;
     }
 }
