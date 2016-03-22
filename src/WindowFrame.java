@@ -14,21 +14,22 @@ public class WindowFrame extends JFrame
 	JFrame frame = new JFrame("WindowTitle");
 	frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-	JPanel infoPanel = createInfoPanel();
-
 	Container contents = frame.getContentPane();
+
+	JPanel infoPanel = createInfoPanel();
+	JPanel sectionPanel = createSectionGrid(sectionComp, contents);
+
 	contents.add(infoPanel, BorderLayout.EAST);
-	//contents.add(sectionComp, BorderLayout.CENTER);
-	createSectionGrid(sectionComp, contents);
+	contents.add(sectionPanel, BorderLayout.CENTER);
 
-
-	frame.setSize(500,500);
+	frame.setSize(700,700);
 	frame.setVisible(true);
     }
 
     private JPanel createInfoPanel() {
 	JTextArea info = new JTextArea();
 	info.setText("JEIJDEIJDIEJ");
+	info.setToolTipText("NOpe" );
 	info.setEditable(false);
 
 	JLabel infoTitle = new JLabel("Info");
@@ -49,14 +50,30 @@ public class WindowFrame extends JFrame
 	return sectionPanel;
     }
 
-    private void createSectionGrid(SectionComponent SectionComp, Container contents) {
-	Section section = SectionComp.getSection();
-	System.out.println(section.getWidth());
+    private JPanel createSectionGrid(SectionComponent sectionComp, Container contents) {
+	JPanel sectionPanel = new JPanel();
+	sectionPanel.setBackground(Color.RED);
+
+	sectionPanel.setLayout(new GridLayout(10,20));
+	Section section = sectionComp.getSection();
+
 	for (int h = 0; h < section.getHeight() ; h++) {
 	    for (int w = 0; w < section.getWidth(); w++) {
 		SeatComponent seatC = new SeatComponent(section.getSeatAt(h, w));
-		contents.add(seatC, BorderLayout.CENTER);
+		String chairInfo = createInfoString(seatC);
+		seatC.setToolTipText(chairInfo);
+		sectionPanel.add(seatC);
 	    }
 	}
+	return sectionPanel;
+    }
+
+    private String createInfoString(SeatComponent seatC) {
+	String chairRow = Integer.toString((seatC.getSeat().getRow()));
+	String chairSeat = Integer.toString((seatC.getSeat().getSeat()));
+
+	String text = "Row: " + chairRow + " \n" + "Seat: " + chairSeat;
+
+	return text;
     }
 }

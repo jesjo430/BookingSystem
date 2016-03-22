@@ -8,7 +8,7 @@ import java.awt.*;
 public class SeatComponent extends JComponent
 {
     private Seat seat;
-    private static final int CHAIR_SIZE = 40;
+    private static final int CHAIR_SIZE = 10;
 
     public SeatComponent(Seat seat) {
 	this.seat = seat;
@@ -27,5 +27,9 @@ public class SeatComponent extends JComponent
 
 	g2d.setColor(getSeatColorAt());
 	g2d.fillRect(CHAIR_SIZE, CHAIR_SIZE, CHAIR_SIZE-(CHAIR_SIZE/2), CHAIR_SIZE-(CHAIR_SIZE/2));
+    }
+
+    public Seat getSeat() {
+	return seat;
     }
 }
