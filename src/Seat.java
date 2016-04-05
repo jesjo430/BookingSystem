@@ -23,6 +23,13 @@ public class Seat
 	this.chairType = ChairType.SINGLE;
     }
 
+    public void book(int row, int seat, String name) {
+    	if (!this.isBooked()) {
+    	    this.setStatus(true);
+    	    this.setName(name);
+    	}
+    }
+
     public void setStatus(final boolean status) {
 	this.status = status;
     }

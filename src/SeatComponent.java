@@ -8,7 +8,7 @@ import java.awt.*;
 public class SeatComponent extends JComponent
 {
     private Seat seat;
-    private static final int CHAIR_SIZE = 10;
+    private static final int CHAIR_SIZE = 50;
 
     public SeatComponent(Seat seat) {
 	this.seat = seat;
