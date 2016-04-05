@@ -19,7 +19,7 @@ public class Listener implements MouseListener
     }
 
     @Override public void mouseEntered(final MouseEvent e) {
-
+	SeatComponent seatC = (SeatComponent) e.getSource();
     }
 
     @Override public void mouseExited(final MouseEvent e) {

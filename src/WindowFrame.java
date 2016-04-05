@@ -11,6 +11,9 @@ public class WindowFrame extends JFrame
     public static int FRAMESIZEX = 700;
     public static int FRAMESIZEY = 700;
 
+    private JTextArea infoArea = new JTextArea();
+    private String infoString = "";
+
 
     public WindowFrame(SectionComponent sectionComp) {
 	JFrame frame = new JFrame("WindowTitle");
@@ -29,19 +32,22 @@ public class WindowFrame extends JFrame
     }
 
     private JPanel createInfoPanel() {
-	JTextArea info = new JTextArea();
-	info.setText("JEIJDEIJDIEJ");
-	info.setToolTipText("NOpe" );
-	info.setEditable(false);
+	infoArea.setText(infoString);
+	infoArea.setToolTipText("NOpe" );
+	infoArea.setEditable(false);
 
 	JLabel infoTitle = new JLabel("Info");
 
 	JPanel infoPanel = new JPanel();
 
 	infoPanel.add(infoTitle);
-	infoPanel.add(info);
+	infoPanel.add(infoArea);
 
 	return infoPanel;
+    }
+
+    public void updateInfoPael() {
+	infoArea.setText(infoString);
     }
 
     private JPanel createSectionPanel(SectionComponent sectionComp) {
@@ -56,7 +62,7 @@ public class WindowFrame extends JFrame
 	JPanel sectionPanel = new JPanel();
 	sectionPanel.setBackground(Color.GRAY);
 
-	sectionPanel.setLayout(new GridLayout(10,20));
+	sectionPanel.setLayout(new GridLayout(10,10));
 	Section section = sectionComp.getSection();
 
 	for (int h = 0; h < section.getHeight() ; h++) {
