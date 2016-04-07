@@ -1,3 +1,5 @@
+import javafx.geometry.Rectangle2D;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -8,7 +10,7 @@ import java.awt.*;
 public class SeatComponent extends JComponent
 {
     private Seat seat;
-    private static final int CHAIR_SIZE = 20;
+    private static final int CHAIR_SIZE = 300;
 
     public SeatComponent(Seat seat) {
 	this.seat = seat;
@@ -25,7 +27,8 @@ public class SeatComponent extends JComponent
 	final Graphics2D g2d = (Graphics2D) g;
 
 	g2d.setColor(getSeatColorAt());
-	g2d.drawRect(0, 0, CHAIR_SIZE, CHAIR_SIZE);
+	Shape rect = new Rectangle(CHAIR_SIZE, CHAIR_SIZE);
+	g2d.draw(rect);
     }
 
     public Seat getSeat() {

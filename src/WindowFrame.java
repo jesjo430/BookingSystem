@@ -10,9 +10,6 @@ import java.awt.*;
  */
 public class WindowFrame extends JFrame
 {
-    public static int FRAMESIZEX = 700;
-    public static int FRAMESIZEY = 700;
-
     private JTextArea infoArea = new JTextArea();
     private String infoString = "";
 
@@ -43,10 +40,6 @@ public class WindowFrame extends JFrame
 	infoPanel.add(infoArea);
 
 	return infoPanel;
-    }
-
-    public void updateInfoPael() {
-	infoArea.setText(infoString);
     }
 
     private JPanel createSectionGrid(SectionComponent sectionComp, Container contents) {
