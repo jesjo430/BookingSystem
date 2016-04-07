@@ -1,3 +1,5 @@
+import net.miginfocom.swing.MigLayout;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -21,13 +23,22 @@ public class WindowFrame extends JFrame
 
 	Container contents = frame.getContentPane();
 
-	JPanel infoPanel = createInfoPanel();
-	JPanel sectionPanel = createSectionGrid(sectionComp, contents);
+	frame.setLayout(new MigLayout("","[][grow][]","[grow]"));
 
-	contents.add(infoPanel, BorderLayout.EAST);
-	contents.add(sectionPanel, BorderLayout.CENTER);
+	//JPanel sectionPanel = createSectionGrid(sectionComp, contents);
+	//contents.add(sectionPanel);
 
-	frame.setSize(FRAMESIZEX, FRAMESIZEY);
+	frame.add(new JButton("B"), "gapright unrelated");
+	frame.add(new JButton("B"), "wrap");
+	frame.add(new JButton("B"));
+	frame.add(new JButton("B"),"span 3, grow, wrap");
+	frame.add(new JButton("B"));
+
+
+
+
+	//frame.setSize(FRAMESIZEX, FRAMESIZEY);
+	frame.pack();
 	frame.setVisible(true);
     }
 
@@ -60,7 +71,7 @@ public class WindowFrame extends JFrame
 
     private JPanel createSectionGrid(SectionComponent sectionComp, Container contents) {
 	JPanel sectionPanel = new JPanel();
-	sectionPanel.setBackground(Color.GRAY);
+	sectionPanel.setBackground(Color.ORANGE);
 
 	sectionPanel.setLayout(new GridLayout(10,10));
 	Section section = sectionComp.getSection();
@@ -69,8 +80,11 @@ public class WindowFrame extends JFrame
 	    for (int w = 0; w < section.getWidth(); w++) {
 		SeatComponent seatC = new SeatComponent(section.getSeatAt(h, w));
 
-		String chairInfo = createInfoString(seatC);
-		seatC.setToolTipText(chairInfo);
+		seatC.setSize(10,10);
+		seatC.setLocation(10,10);
+
+		//String chairInfo = createInfoString(seatC);
+		//seatC.setToolTipText(chairInfo);
 
 		seatC.addMouseListener(new Listener());
 
