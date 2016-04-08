@@ -23,7 +23,7 @@ public class Section
 
     public void book(int row, int seat, String name) {
 	Seat place = seats[row][seat];
-	if (!place.isBooked()) {
+	if (!place.getIsBooked()) {
 	    place.setStatus(true);
 	    place.setName(name);
 	}

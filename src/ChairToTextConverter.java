@@ -22,7 +22,7 @@ public class ChairToTextConverter
     }
 
     private static StringBuilder seatStatus(Seat seat, StringBuilder stringbBuilder) {
-	if (seat.isBooked()) {
+	if (seat.getIsBooked()) {
 	    stringbBuilder.append("F");
 	}
 	else {

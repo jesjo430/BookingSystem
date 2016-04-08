@@ -10,7 +10,9 @@ public class Listener implements MouseListener
 
     @Override public void mousePressed(final MouseEvent e) {
 	SeatComponent seatC = (SeatComponent) e.getSource();
-	seatC.getSeat().book(3,3, "Mamma");
+
+
+	//seatC.getSeat().book(3,3, "Mamma");
 	seatC.repaint();
     }
 

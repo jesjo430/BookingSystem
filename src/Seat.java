@@ -24,7 +24,7 @@ public class Seat
     }
 
     public void book(int row, int seat, String name) {
-    	if (!this.isBooked()) {
+    	if (!this.getIsBooked()) {
     	    this.setStatus(true);
     	    this.setName(name);
     	}
@@ -34,7 +34,7 @@ public class Seat
 	this.status = status;
     }
 
-    public boolean isBooked() {
+    public boolean getIsBooked() {
 	return status;
     }
 
