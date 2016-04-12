@@ -8,7 +8,7 @@ public class Test
 	Section test = new Section(20, 20);
 	SectionComponent sc = new SectionComponent(test);
 
-	sc.getSection().book(1,1,"Jesper");
+	User user = new NormalUser("Jesper");
 
 	new WindowFrame(sc);
     }

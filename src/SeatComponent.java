@@ -54,12 +54,6 @@ public class SeatComponent extends JComponent
 
     public boolean seatInMarkedSeatList(SeatComponent seatC) {
 	return markedSeats.contains(seatC);
-//	for (SeatComponent seat : markedSeats) {
-//	    if (seatC.equals(seat)) {
-//		return true;
-//	    }
-//	}
-//	return false;
     }
 
     public void removeFromMarkedList(SeatComponent seatC) {

@@ -11,10 +11,12 @@ import java.awt.event.ActionListener;
 
 public class WindowFrame extends JFrame
 {
+    User user = new NormalUser("Jesper");
 
     public WindowFrame(SectionComponent sectionComp) {
 	JFrame frame = new JFrame("WindowTitle");
 	frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
 	Container contents = frame.getContentPane();
 	contents.setLayout(new MigLayout("debug", "[grow][][]","[grow][][]"));
 
@@ -34,10 +36,15 @@ public class WindowFrame extends JFrame
 	    @Override public void actionPerformed(final ActionEvent e) {
 		for (SeatComponent seatC : SeatComponent.getMarkedSeats()) {
 		    seatC.getSeat().setStatus(true);
+
+		    String name = JOptionPane.showInputDialog("Please enter your name: ");
+		    seatC.getSeat().setName(user.getName());
+
+		    String chairInfo = createToolTipString(seatC);
+		    seatC.setToolTipText(chairInfo);
+
 		    seatC.repaint();
 		}
-
-		System.out.println("Booked!");
 	    }
 	});
 
@@ -95,11 +102,13 @@ public class WindowFrame extends JFrame
 	String chairSeat = Integer.toString((seatC.getSeat().getSeat()));
 	String chairName = seatC.getSeat().getName();
 
-	String text = "Row: " + chairRow + " \n" + "Seat: " + chairSeat;
+	String text = "Row: " + chairRow + "\n" + "  Seat: " + chairSeat;
 	if (chairName != null) {
-	    text += " \n" + "Name: " + chairName;
+	    text += " \n" + "  Name: " + chairName;
 	}
 
 	return text;
     }
 }
+
+
