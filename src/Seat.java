@@ -1,3 +1,5 @@
+import java.util.List;
+
 /**
  * The representation of every seat, containing info as status that tells if seat is free,
  * eventuall name of booker and row- and seat-number on the section it belongs.
@@ -9,6 +11,11 @@ public class Seat
     private final int row;
     private final int seat;
     private ChairType chairType;
+
+    public boolean seatIsMarked = false;
+
+
+
 
     public Seat(final int row, final int seat) {
 	this.row = row;
@@ -24,9 +31,9 @@ public class Seat
     }
 
     public void book(int row, int seat, String name) {
-    	if (!this.getIsBooked()) {
-    	    this.setStatus(true);
-    	    this.setName(name);
+    	if (!getIsBooked()) {
+    	    setStatus(true);
+    	    setName(name);
     	}
     }
 
@@ -57,4 +64,8 @@ public class Seat
     public ChairType getChairType() {
    	return chairType;
        }
+
+    public void setSeatIsMarked(final boolean bol) {
+    	seatIsMarked = bol;
+        }
 }

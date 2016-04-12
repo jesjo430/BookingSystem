@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * yep
@@ -8,18 +10,24 @@ import java.awt.*;
 public class SeatComponent extends JComponent
 {
     private Seat seat;
+    private static List<SeatComponent> markedSeats = new ArrayList<>();
+
     private static final int CHAIR_SIZE = 20;
 
     public SeatComponent(Seat seat) {
 	this.seat = seat;
     }
 
-    private Color getSeatColorAt(){
+    private Color getSeatColorAt() {
 	if (seat.getIsBooked()) {
-		    return Color.RED;
-		}
-		return Color.BLUE;
+	    return Color.RED;
+	}
+	else if (seat.seatIsMarked) {
+	    return Color.LIGHT_GRAY;
+	}
+	return Color.GRAY;
     }
+
 
     @Override public Dimension getPreferredSize() {
 	return new Dimension(CHAIR_SIZE, CHAIR_SIZE);
@@ -34,5 +42,27 @@ public class SeatComponent extends JComponent
 
     public Seat getSeat() {
 	return seat;
+    }
+
+    public void addToMarkedList(SeatComponent seatC) {
+	markedSeats.add(seatC);
+    }
+
+    public static List<SeatComponent> getMarkedSeats() {
+    	return markedSeats;
+        }
+
+    public boolean seatInMarkedSeatList(SeatComponent seatC) {
+	return markedSeats.contains(seatC);
+//	for (SeatComponent seat : markedSeats) {
+//	    if (seatC.equals(seat)) {
+//		return true;
+//	    }
+//	}
+//	return false;
+    }
+
+    public void removeFromMarkedList(SeatComponent seatC) {
+	markedSeats.remove(seatC);
     }
 }

@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The chair sections, a 2-dimensional array representing the chairs.
  */
@@ -5,6 +8,7 @@ public class Section
 {
     private int height, width;
     private Seat[][] seats;
+
 
     public Section(final int height, final int width) {
 	this.height = height;
@@ -44,4 +48,6 @@ public class Section
     public Seat getSeatAt(int row, int seat) {
 	return seats[row][seat];
     }
+
+
 }
