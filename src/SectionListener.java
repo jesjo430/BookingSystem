@@ -5,7 +5,7 @@ import java.awt.event.MouseListener;
  * Listnera
  */
 
-public class Listener implements MouseListener
+public class SectionListener implements MouseListener
 {
 
     @Override public void mouseClicked(final MouseEvent e) {

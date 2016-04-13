@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 /**
  * This class is the window of the program. It contains a section and components.
@@ -11,7 +12,7 @@ import java.awt.event.ActionListener;
 
 public class WindowFrame extends JFrame
 {
-    User user = new NormalUser("Jesper");
+    private ArrayList sections = new ArrayList();
 
     public WindowFrame(SectionComponent sectionComp) {
 	JFrame frame = new JFrame("WindowTitle");
@@ -20,12 +21,15 @@ public class WindowFrame extends JFrame
 	Container contents = frame.getContentPane();
 	contents.setLayout(new MigLayout("debug", "[grow][][]","[grow][][]"));
 
-	contents.add(createSectionGrid(sectionComp), "wrap");
+
+	contents.add(createSectionGrid(sectionComp));
+	contents.add(createInfoPanel(), "height 100, width 50, wrap");
 	contents.add(createButtons(), "skip");
 
 	frame.pack();
 	frame.setVisible(true);
     }
+
 
     private JPanel createButtons() {
 	JPanel panel = new JPanel();
@@ -37,8 +41,8 @@ public class WindowFrame extends JFrame
 		for (SeatComponent seatC : SeatComponent.getMarkedSeats()) {
 		    seatC.getSeat().setStatus(true);
 
-		    String name = JOptionPane.showInputDialog("Please enter your name: ");
-		    seatC.getSeat().setName(user.getName());
+		    //String name = JOptionPane.showInputDialog("Please enter your name: ");
+		    //seatC.getSeat().setName(user.getName());
 
 		    String chairInfo = createToolTipString(seatC);
 		    seatC.setToolTipText(chairInfo);
@@ -55,17 +59,13 @@ public class WindowFrame extends JFrame
 
     private JPanel createInfoPanel() {
 	JTextArea infoArea = new JTextArea();
- 	String infoString = "";
 
-	infoArea.setText(infoString);
-	infoArea.setToolTipText("NOpe" );
-	infoArea.setEditable(false);
+	String[] eventList = {"Hej", "Vad", "Heter", "du", "?"};
 
-	JLabel infoTitle = new JLabel("Info");
+	JList list = new JList(eventList);
 
 	JPanel infoPanel = new JPanel();
-
-	infoPanel.add(infoTitle);
+	infoPanel.add(list);
 	infoPanel.add(infoArea);
 
 	return infoPanel;
@@ -84,7 +84,7 @@ public class WindowFrame extends JFrame
 
 		String chairInfo = createToolTipString(seatC);
 		seatC.setToolTipText(chairInfo);
-		seatC.addMouseListener(new Listener());
+		seatC.addMouseListener(new SectionListener());
 
 		if (w == section.getWidth()-1) {
 		    sectionPanel.add(seatC, "wrap");
