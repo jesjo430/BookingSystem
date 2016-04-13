@@ -9,4 +9,10 @@ public class NormalUser implements User
     public String getName() {
 	return name;
     }
+
+    public String getAuthorisation() {
+	return "Normal";
+    }
+
+
 }

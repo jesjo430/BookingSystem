@@ -26,4 +26,5 @@ public class EventList
     public List<Event> getEventList() {
         return eventList;
     }
+
 }
