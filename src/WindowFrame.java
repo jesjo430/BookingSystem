@@ -12,10 +12,9 @@ import java.util.ArrayList;
 
 public class WindowFrame extends JFrame
 {
-    private ArrayList sections = new ArrayList();
 
     public WindowFrame(SectionComponent sectionComp) {
-	JFrame frame = new JFrame("WindowTitle");
+	JFrame frame = new JFrame("FkngWindowTitle");
 	frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 	Container contents = frame.getContentPane();
