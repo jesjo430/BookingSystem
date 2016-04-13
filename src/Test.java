@@ -11,6 +11,6 @@ public class Test
 	User user = new NormalUser("Jesper");
 
 	new WindowFrame(sc);
-	//hdsj
+	//hds
     }
 }
