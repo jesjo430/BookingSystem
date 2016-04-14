@@ -28,11 +28,12 @@ public class WindowFrame extends JFrame
 
 
     public WindowFrame() {
-	frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+	frame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 	frame.setLayout(new BorderLayout());
 
 	Container contents = frame.getContentPane();
-	contents.setLayout(new MigLayout("debug", "[grow][][]","[grow][][]"));
+	contents.setBackground(Color.GRAY);
+	contents.setLayout(new MigLayout("", "[grow][][]","[grow][][]"));
 
 	initContent();
     }
@@ -81,8 +82,7 @@ public class WindowFrame extends JFrame
 	exit.addActionListener(new ActionListener()
 	{
 	    @Override public void actionPerformed(final ActionEvent e) {
-		new WriteFile(EventList.getINSTANCE().writeEventToFile(), Test.EVENT_TXT);
-		System.exit(0);
+		quitSession();
 	    }
 	});
 
@@ -181,8 +181,8 @@ public class WindowFrame extends JFrame
 	JPanel infoPanel = new JPanel();
 	infoPanel.setLayout(new MigLayout());
 
-	freeSeats = new JLabel("Free: " + currentEvent.getSectionC().getSection().getAmountOfFreeSeats());
-	bookedSeats = new JLabel("Booked: " + (currentEvent.getSectionC().getSection().getAmountOfFreeSeats() - sectionC.getSection().getTotalSeats()));
+	freeSeats = new JLabel("Free: " + currentEvent.getSection().getAmountOfFreeSeats());
+	bookedSeats = new JLabel("Booked: " + (Math.abs(currentEvent.getSectionC().getSection().getAmountOfFreeSeats() - sectionC.getSection().getTotalSeats())));
 
 	infoPanel.add(freeSeats, "wrap");
 	infoPanel.add(bookedSeats);
@@ -212,7 +212,7 @@ public class WindowFrame extends JFrame
 	exitItem.setToolTipText("Exit application");
 	exitItem.addActionListener(new ActionListener() {
 	    @Override public void actionPerformed(ActionEvent event) {
-		System.exit(0);
+		quitSession();
 	    }
 	});
 
@@ -234,5 +234,10 @@ public class WindowFrame extends JFrame
 	menuBar.add(fileMenu);
 	menuBar.add(helpMenu);
 	frame.setJMenuBar(menuBar);
+    }
+
+    private void quitSession() {
+	new WriteFile(EventList.getINSTANCE().writeEventToFile(), Test.EVENT_TXT);
+	System.exit(0);
     }
 }

@@ -37,7 +37,7 @@ public class SeatComponent extends JComponent
 	final Graphics2D g2d = (Graphics2D) g;
 
 	g2d.setColor(getSeatColorAt());
-	g2d.fillRect(0,0,CHAIR_SIZE,CHAIR_SIZE);
+	g2d.fillRoundRect(0,0,CHAIR_SIZE,CHAIR_SIZE, 2,2);
     }
 
     public Seat getSeat() {
