@@ -1,3 +1,4 @@
+import javafx.scene.input.KeyEvent;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -22,10 +23,13 @@ public class WindowFrame extends JFrame
     private SectionComponent sectionC = currentEvent.getSectionC();
     private JLabel freeSeats;
     private JLabel bookedSeats;
+    private JMenuBar menuBar;
+    private JMenu menu, submenu;
 
 
     public WindowFrame() {
 	frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+	frame.setLayout(new BorderLayout());
 
 	Container contents = frame.getContentPane();
 	contents.setLayout(new MigLayout("debug", "[grow][][]","[grow][][]"));
@@ -39,6 +43,8 @@ public class WindowFrame extends JFrame
 	JLabel eventTitle = new JLabel(currentEvent.getTitle());
 	Font titleFont = new Font("Times New Roman", Font.BOLD, EVENT_TITLE_FONT_SIZE);
 	eventTitle.setFont(titleFont);
+
+	addMenuBar();
 
 	contents.add(eventTitle, "gap 50px, width 30, height 40, wrap");
 
@@ -186,5 +192,15 @@ public class WindowFrame extends JFrame
     private void updateInfoPanel() {
 	freeSeats.setText("Free: " + currentEvent.getSectionC().getSection().getAmountOfFreeSeats());
 	bookedSeats.setText("Booked: " + (sectionC.getSection().getTotalSeats() - currentEvent.getSectionC().getSection().getAmountOfFreeSeats()));
+    }
+
+    private void addMenuBar() {
+	menuBar = new JMenuBar();
+
+	menu = new JMenu("File");
+
+	menuBar.add(menu);
+
+	frame.setJMenuBar(menuBar);
     }
 }
