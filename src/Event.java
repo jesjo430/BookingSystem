@@ -1,15 +1,19 @@
+/**
+ * Events
+ */
+
 public class Event
 {
     private Section section;
     private SectionComponent sectionC;
-    private String name;
+    private String title;
     private String time;
     private String date;
 
-    public Event(final Section section, final SectionComponent sectionC, final String name, final String time, final String date) {
+    public Event(final Section section, final String title, final String time, final String date) {
 	this.section = section;
-	this.sectionC = sectionC;
-	this.name = name;
+	this.sectionC = new SectionComponent(section);
+	this.title = title;
 	this.time = time;
 	this.date = date;
     }
@@ -22,8 +26,8 @@ public class Event
 	return sectionC;
     }
 
-    public String getName() {
-	return name;
+    public String getTitle() {
+	return title;
     }
 
     public String getTime() {

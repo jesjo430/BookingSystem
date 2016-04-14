@@ -5,18 +5,18 @@ import java.util.List;
  * Singelton with all events.
  */
 
-public class EventList
+public final class EventList
 {
     private List<Event> eventList;
 
-    private static EventList ourInstance = new EventList();
+    private final static EventList INSTANCE = new EventList();
 
-    public static EventList getInstance() {
-	return ourInstance;
+    public static EventList getINSTANCE() {
+	return INSTANCE;
     }
 
     private EventList() {
-        this.eventList = new ArrayList<Event>();
+        this.eventList = new ArrayList<>();
     }
 
     public void addToEventList(Event event) {

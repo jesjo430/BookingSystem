@@ -8,11 +8,13 @@ public class Section
 {
     private int height, width;
     private Seat[][] seats;
+    private int totalSeats;
 
 
     public Section(final int height, final int width) {
 	this.height = height;
 	this.width = width;
+	this.totalSeats = height*width;
 	initialize();
     }
 
@@ -49,5 +51,19 @@ public class Section
 	return seats[row][seat];
     }
 
+    public int getAmountOfFreeSeats() {
+	int amount = 0;
+	for (Seat[] row : seats) {
+	    for (Seat seat : row) {
+		if (!seat.getIsBooked()) {
+		    amount += 1;
+		}
+	    }
+	}
+	return amount;
+    }
 
+    public int getTotalSeats() {
+	return totalSeats;
+    }
 }

@@ -22,7 +22,6 @@ public class SectionListener implements MouseListener
 	    seatC.getSeat().setSeatIsMarked(true);
 	    seatC.addToMarkedList(seatC);
 	}
-
 	seatC.repaint();
     }
 
