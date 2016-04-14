@@ -1,4 +1,4 @@
-import javafx.scene.input.KeyEvent;
+import javafx.scene.input.*;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -17,14 +17,14 @@ public class WindowFrame extends JFrame
 {
     private static final int EVENT_TITLE_FONT_SIZE = 25;
 
+    String rad0 = "0 1 0 0 0 0 0";
+    String[] booking = rad0.split(" ");
 
     private JFrame frame = new JFrame("WindowTitle");
     private Event currentEvent = EventList.getINSTANCE().getEventList().get(0);
     private SectionComponent sectionC = currentEvent.getSectionC();
     private JLabel freeSeats;
     private JLabel bookedSeats;
-    private JMenuBar menuBar;
-    private JMenu menu, submenu;
 
 
     public WindowFrame() {
@@ -81,8 +81,9 @@ public class WindowFrame extends JFrame
 	exit.addActionListener(new ActionListener()
 	{
 	    @Override public void actionPerformed(final ActionEvent e) {
-			System.exit(0);
-		    }
+		new WriteFile(EventList.getINSTANCE().writeEventToFile(), Test.EVENT_TXT);
+		System.exit(0);
+	    }
 	});
 
 	panel.add(book);
@@ -195,12 +196,43 @@ public class WindowFrame extends JFrame
     }
 
     private void addMenuBar() {
+	JMenuBar menuBar;
+	JMenu fileMenu, helpMenu;
+	JMenuItem exitItem = new JMenuItem("Quit");
+	JMenuItem helpItem = new JMenuItem("Instructions");
+
 	menuBar = new JMenuBar();
 
-	menu = new JMenu("File");
+	fileMenu = new JMenu("File");
+	fileMenu.setMnemonic('F');
 
-	menuBar.add(menu);
+	fileMenu.addSeparator();
+	exitItem.setAccelerator(KeyStroke.getKeyStroke('Q' ,ActionEvent.CTRL_MASK));
 
+	exitItem.setToolTipText("Exit application");
+	exitItem.addActionListener(new ActionListener() {
+	    @Override public void actionPerformed(ActionEvent event) {
+		System.exit(0);
+	    }
+	});
+
+	helpMenu = new JMenu("Help");
+	helpMenu.setMnemonic('H');
+
+	helpItem.setAccelerator(KeyStroke.getKeyStroke('I' ,ActionEvent.CTRL_MASK));
+	helpItem.setToolTipText("Instructions");
+	helpItem.addActionListener(new ActionListener() {
+	    @Override public void actionPerformed(ActionEvent event) {
+		JOptionPane.showMessageDialog(frame, "Sorry, no instructions avalible.");
+	    }
+	});
+
+
+	fileMenu.add(exitItem);
+	helpMenu.add(helpItem);
+
+	menuBar.add(fileMenu);
+	menuBar.add(helpMenu);
 	frame.setJMenuBar(menuBar);
     }
 }

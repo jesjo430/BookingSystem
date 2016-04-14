@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -66,4 +67,29 @@ public class Section
     public int getTotalSeats() {
 	return totalSeats;
     }
+
+    public String writeSectionToFile() {
+	StringBuilder text = new StringBuilder();
+	for (Seat[] row : seats) {
+	    text.append("'");
+	    for (Seat seat : row) {
+		text.append(seat.getIsBooked() + "¤");
+		System.out.println(seat.getRow());
+
+	    }
+	}
+	String res = text.toString();
+	System.out.println(res);
+	return res;
+    }
+
+   public String getBookedChairsCordinates() {
+       StringBuilder string = new StringBuilder();
+       for (Seat[] row : seats) {
+	   for (Seat seat : row) {
+	       string.append(seat.getIsBooked() + " ");
+	   }
+       }
+       return string.toString();
+   }
 }

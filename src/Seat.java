@@ -30,10 +30,9 @@ public class Seat
 	this.chairType = ChairType.SINGLE;
     }
 
-    public void book(int row, int seat, String name) {
+    public void book(int row, int seat) {
     	if (!getIsBooked()) {
     	    setStatus(true);
-    	    setName(name);
     	}
     }
 

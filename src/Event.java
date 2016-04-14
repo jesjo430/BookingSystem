@@ -38,4 +38,14 @@ public class Event
 	return date;
     }
 
+    @Override public String toString() {
+	return "'Event{" +
+	       ",sectionHeight='" + section.getHeight() + "\'" +
+	       ",sectionWidth='" + section.getWidth() + "\'" +
+	       ",title='" + title + '\'' +
+	       ", time='" + time + '\'' +
+	       ", date='" + date + '\'' +
+	       ", bookedChairs='" + section.getBookedChairsCordinates() + "\'" +
+	       "},";
+    }
 }

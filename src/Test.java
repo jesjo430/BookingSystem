@@ -4,16 +4,27 @@
 
 public class Test
 {
-    public static void main(String[] args) {
-	Section test1 = new Section(20, 20);
-	Section test2 = new Section(20, 20);
-	Section test3 = new Section(20, 20);
+    /**
+     * Event.txt the file containing data about the saved events.
+     */
+    public static final String EVENT_TXT = "event.txt";
+    public static final String SECTION_TXT = "section.txt";
 
-	EventList.getINSTANCE().addToEventList(new Event(test1, "Jesper Del 1", "12:00", "1 Jan"));
-	EventList.getINSTANCE().addToEventList(new Event(test2, "Jesper Del 2", "14:00", "1 Jan"));
-	EventList.getINSTANCE().addToEventList(new Event(test3, "Jesper Del 3", "16:00", "1 Jan"));
+    public static void main(String[] args) {
+	EventList.getINSTANCE().loadEventListFromFile();
 
 	new WindowFrame();
 
+	ReadFile read = new ReadFile();
+	String string = read.ReadFile(EVENT_TXT);
+	System.out.println(string);
+
+	System.out.println(" \n ------------------------------------------------------------------ \n");
+
+
+
+	System.out.println("DONE!");
+
+//	System.exit(0);
     }
 }
