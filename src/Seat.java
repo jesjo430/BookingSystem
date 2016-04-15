@@ -10,12 +10,11 @@ public class Seat
     private String name;
     private final int row;
     private final int seat;
-    private ChairType chairType;
 
+    /**
+     * Boolean value on the question: "IS the seat booked?".
+     */
     public boolean seatIsMarked = false;
-
-
-
 
     public Seat(final int row, final int seat) {
 	this.row = row;
@@ -27,12 +26,11 @@ public class Seat
     private void initialize() {
 	this.status = false;
 	this.name = null;
-	this.chairType = ChairType.SINGLE;
     }
 
-    public void book(int row, int seat) {
-    	if (!getIsBooked()) {
-    	    setStatus(true);
+    public void book() {
+    	if (!status) {
+    	    status = true;
     	}
     }
 
@@ -42,10 +40,6 @@ public class Seat
 
     public boolean getIsBooked() {
 	return status;
-    }
-
-    public void setName(final String name) {
-	this.name = name;
     }
 
     public String getName() {
@@ -59,10 +53,6 @@ public class Seat
     public int getSeat() {
 	return seat;
     }
-
-    public ChairType getChairType() {
-   	return chairType;
-       }
 
     public void setSeatIsMarked(final boolean bol) {
     	seatIsMarked = bol;

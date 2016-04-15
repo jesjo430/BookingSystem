@@ -34,7 +34,9 @@ public final class EventList
     public String writeEventToFile() {
    	StringBuilder text = new StringBuilder();
    	for (Event event : eventList) {
-            text.append(event + "¤" +"\n");
+            text.append(event);
+	    text.append("¤");
+	    text.append("\n");
         }
 
    	return text.toString();
@@ -42,8 +44,8 @@ public final class EventList
 
     public void loadEventListFromFile() {
 	ReadFile read = new ReadFile();
-	String string = read.ReadFile(Test.EVENT_TXT);
-	String[] eventLists = string.split("¤");
+	String readEventString = read.ReadFile(Test.EVENT_TXT);
+	String[] eventLists = readEventString.split("¤");
 	for (String strings : eventLists) {
 	    String[] eventDetails = strings.split("'");
 	    if (eventDetails.length > 1) {
@@ -54,7 +56,7 @@ public final class EventList
 		String[] bookings = eventDetails[12].split(" ");
 		int row = 0;
 		int seat = 0;
-		for(String bool : bookings) {
+		for(String seatStatus : bookings) {
 		    if(seat == Integer.parseInt(eventDetails[4])) {
 			seat = 0;
 			row += 1;
@@ -62,8 +64,8 @@ public final class EventList
 		    if(row == Integer.parseInt(eventDetails[2])) {
 			break;
 		    }
-		    if (!bool.equals("false")) {
-			section.getSeatAt(row, seat).book(row, seat);
+		    if (!seatStatus.equals("false")) {
+			section.getSeatAt(row, seat).book();
 			System.out.println("JJFHKF");
 		    }
 		    seat += 1;

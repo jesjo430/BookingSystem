@@ -2,7 +2,6 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.plaf.basic.BasicOptionPaneUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,8 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * This class is the window of the program. It contains a section and components.
- * now with a comment.
+ * This class is the window of the program. It contains components.
  */
 
 public class WindowFrame extends JFrame
@@ -20,12 +18,12 @@ public class WindowFrame extends JFrame
     private static final int EVENT_TITLE_FONT_SIZE = 25;
 
     private JFrame frame = new JFrame("WindowTitle");
-    private Container contents = frame.getContentPane();
     private Event currentEvent;
     private SectionComponent sectionC;
     private JLabel freeSeats;
     private JLabel bookedSeats;
 
+    private int horizontalStrut = 10;
 
 
     public WindowFrame() {
@@ -35,6 +33,7 @@ public class WindowFrame extends JFrame
 	currentEvent = EventList.getINSTANCE().getEventList().get(0);
 	sectionC  = currentEvent.getSectionC();
 
+	Container contents = frame.getContentPane();
 	contents.setBackground(Color.PINK);
 	contents.setLayout(new MigLayout("", "[grow][][]","[grow][][]"));
 
@@ -96,7 +95,7 @@ public class WindowFrame extends JFrame
 
     private JPanel createEventSelectionPanel() {
 	DefaultListModel<String> listModel = new DefaultListModel<>();
-	JList<String> eventList = new JList(listModel);
+	JList<String> eventList = new JList<>(listModel);
 
 	for (Event e : EventList.getINSTANCE().getEventList()) {
 	    listModel.addElement(e.getTitle());
@@ -288,7 +287,7 @@ public class WindowFrame extends JFrame
 	myPanel.add(date);
 	myPanel.add(time);
 
-	myPanel.add(Box.createHorizontalStrut(15)); // a spacer
+	myPanel.add(Box.createHorizontalStrut(horizontalStrut)); // a spacer
 	myPanel.add(new JLabel("y:"));
 	myPanel.add(sectionh);
 	myPanel.add(sectionw);
@@ -309,16 +308,19 @@ public class WindowFrame extends JFrame
 	StringBuilder sb = new StringBuilder();
 
 	for (Event event : EventList.getINSTANCE().getEventList()) {
-	    sb.append(event.getTitle() + "'");
+	    sb.append(event.getTitle());
+	    sb.append("'");
 	}
 
 	String sbToString = sb.toString();
-	List<String> event = new ArrayList<String>(Arrays.asList(sbToString.split("'")));
+	List<String> event = new ArrayList<>(Arrays.asList(sbToString.split("'")));
 
-	JList eventList = new JList(event.toArray());
+	JList<Object> eventList = new JList<>(event.toArray());
 
 	myPanel.add(new JLabel("Select the event you would like to edit: "), "wrap");
 	myPanel.add(eventList, "width 250");
+	myPanel.add(Box.createHorizontalStrut(horizontalStrut)); // a spacer
+
 
 	int result = JOptionPane.showConfirmDialog(null, myPanel, message, JOptionPane.OK_CANCEL_OPTION);
 	if (result == JOptionPane.OK_OPTION) {
@@ -337,11 +339,12 @@ public class WindowFrame extends JFrame
 		return event;
 	    }
 	}
-	return null;
+	return new Event(new Section(1,1), "Failed to find event", "", "");
     }
 
     private void quitSession() {
-	new WriteFile(EventList.getINSTANCE().writeEventToFile(), Test.EVENT_TXT);
+	WriteFile wf = new WriteFile(EventList.getINSTANCE().writeEventToFile(), Test.EVENT_TXT);
+	System.out.println(wf);
 	System.exit(0);
     }
 }
