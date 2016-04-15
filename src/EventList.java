@@ -23,6 +23,10 @@ public final class EventList
         eventList.add(event);
     }
 
+    public void removeFromEventList(Event event) {
+	eventList.remove(event);
+    }
+
     public List<Event> getEventList() {
         return eventList;
     }

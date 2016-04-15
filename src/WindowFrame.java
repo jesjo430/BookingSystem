@@ -1,11 +1,13 @@
-import javafx.scene.input.*;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.plaf.basic.BasicOptionPaneUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -17,22 +19,23 @@ public class WindowFrame extends JFrame
 {
     private static final int EVENT_TITLE_FONT_SIZE = 25;
 
-    String rad0 = "0 1 0 0 0 0 0";
-    String[] booking = rad0.split(" ");
-
     private JFrame frame = new JFrame("WindowTitle");
-    private Event currentEvent = EventList.getINSTANCE().getEventList().get(0);
-    private SectionComponent sectionC = currentEvent.getSectionC();
+    private Container contents = frame.getContentPane();
+    private Event currentEvent;
+    private SectionComponent sectionC;
     private JLabel freeSeats;
     private JLabel bookedSeats;
+
 
 
     public WindowFrame() {
 	frame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 	frame.setLayout(new BorderLayout());
 
-	Container contents = frame.getContentPane();
-	contents.setBackground(Color.GRAY);
+	currentEvent = EventList.getINSTANCE().getEventList().get(0);
+	sectionC  = currentEvent.getSectionC();
+
+	contents.setBackground(Color.PINK);
 	contents.setLayout(new MigLayout("", "[grow][][]","[grow][][]"));
 
 	initContent();
@@ -196,19 +199,22 @@ public class WindowFrame extends JFrame
     }
 
     private void addMenuBar() {
-	JMenuBar menuBar;
-	JMenu fileMenu, helpMenu;
-	JMenuItem exitItem = new JMenuItem("Quit");
-	JMenuItem helpItem = new JMenuItem("Instructions");
+	JMenuBar menuBar = new JMenuBar();
+	JMenu fileMenu, editMenu, helpMenu;
 
-	menuBar = new JMenuBar();
+	JMenuItem exitItem = new JMenuItem("Quit");
+
+	JMenuItem newEvent = new JMenuItem("New event");
+	JMenuItem editEvent = new JMenuItem("Edit event");
+
+	JMenuItem instructionsItem = new JMenuItem("Instructions");
+
 
 	fileMenu = new JMenu("File");
 	fileMenu.setMnemonic('F');
 
 	fileMenu.addSeparator();
 	exitItem.setAccelerator(KeyStroke.getKeyStroke('Q' ,ActionEvent.CTRL_MASK));
-
 	exitItem.setToolTipText("Exit application");
 	exitItem.addActionListener(new ActionListener() {
 	    @Override public void actionPerformed(ActionEvent event) {
@@ -216,12 +222,33 @@ public class WindowFrame extends JFrame
 	    }
 	});
 
+	editMenu = new JMenu("Edit");
+	editMenu.setMnemonic('E');
+
+	newEvent.setAccelerator(KeyStroke.getKeyStroke('N', ActionEvent.CTRL_MASK));
+	newEvent.addActionListener(new ActionListener()
+	{
+	    @Override public void actionPerformed(final ActionEvent e) {
+		openNewEventDialog("Create new Event", null);
+	    }
+	});
+
+	editEvent.setAccelerator(KeyStroke.getKeyStroke('E', ActionEvent.CTRL_MASK));
+	editEvent.addActionListener(new ActionListener()
+	{
+	    @Override public void actionPerformed(final ActionEvent e) {
+		openEditEventDialog();
+	    }
+	});
+
+
+
 	helpMenu = new JMenu("Help");
 	helpMenu.setMnemonic('H');
 
-	helpItem.setAccelerator(KeyStroke.getKeyStroke('I' ,ActionEvent.CTRL_MASK));
-	helpItem.setToolTipText("Instructions");
-	helpItem.addActionListener(new ActionListener() {
+	instructionsItem.setAccelerator(KeyStroke.getKeyStroke('I' ,ActionEvent.CTRL_MASK));
+	instructionsItem.setToolTipText("Instructions");
+	instructionsItem.addActionListener(new ActionListener() {
 	    @Override public void actionPerformed(ActionEvent event) {
 		JOptionPane.showMessageDialog(frame, "Sorry, no instructions avalible.");
 	    }
@@ -229,11 +256,88 @@ public class WindowFrame extends JFrame
 
 
 	fileMenu.add(exitItem);
-	helpMenu.add(helpItem);
+	editMenu.add(newEvent);
+	editMenu.add(editEvent);
+	helpMenu.add(instructionsItem);
 
 	menuBar.add(fileMenu);
+	menuBar.add(editMenu);
+	menuBar.add(Box.createHorizontalGlue());
 	menuBar.add(helpMenu);
 	frame.setJMenuBar(menuBar);
+    }
+
+    public void openNewEventDialog(String windowTitle, Event event) {
+	JTextField title = new JTextField(5);
+	JTextField date = new JTextField(5);
+	JTextField time = new JTextField(5);
+	JTextField sectionh = new JTextField(5);
+	JTextField sectionw = new JTextField(5);
+
+	if (event != null) {
+	    title.setText(event.getTitle());
+	    date.setText(event.getDate());
+	    time.setText(event.getTime());
+	    sectionh.setText(Integer.toString(event.getSection().getHeight()));
+	    sectionw.setText(Integer.toString(event.getSection().getWidth()));
+	}
+
+	JPanel myPanel = new JPanel();
+	myPanel.add(new JLabel("x:"));
+	myPanel.add(title);
+	myPanel.add(date);
+	myPanel.add(time);
+
+	myPanel.add(Box.createHorizontalStrut(15)); // a spacer
+	myPanel.add(new JLabel("y:"));
+	myPanel.add(sectionh);
+	myPanel.add(sectionw);
+
+
+	int result = JOptionPane.showConfirmDialog(null, myPanel, windowTitle, JOptionPane.OK_CANCEL_OPTION);
+	if (result == JOptionPane.OK_OPTION) {
+	    Event newEvent = new Event(new Section(Integer.parseInt(sectionh.getText()), Integer.parseInt(sectionw.getText())),
+				       title.getText(), time.getText(), date.getText());
+	    EventList.getINSTANCE().addToEventList(newEvent);
+	}
+	updateContentPane(sectionC);
+    }
+
+    public void openEditEventDialog() {
+	String message = "Create new event";
+	JPanel myPanel = new JPanel(new MigLayout());
+	StringBuilder sb = new StringBuilder();
+
+	for (Event event : EventList.getINSTANCE().getEventList()) {
+	    sb.append(event.getTitle() + "'");
+	}
+
+	String sbToString = sb.toString();
+	List<String> event = new ArrayList<String>(Arrays.asList(sbToString.split("'")));
+
+	JList eventList = new JList(event.toArray());
+
+	myPanel.add(new JLabel("Select the event you would like to edit: "), "wrap");
+	myPanel.add(eventList, "width 250");
+
+	int result = JOptionPane.showConfirmDialog(null, myPanel, message, JOptionPane.OK_CANCEL_OPTION);
+	if (result == JOptionPane.OK_OPTION) {
+	    int marked = eventList.getSelectedIndex();
+
+	    openNewEventDialog("Edit event " + findEventFromString(event.get(marked)).getTitle() + ".",
+			       findEventFromString(event.get(marked)));
+	    EventList.getINSTANCE().removeFromEventList(findEventFromString(event.get(marked)));
+	    updateContentPane(currentEvent.getSectionC());
+	}
+    }
+
+    private Event findEventFromString(String eventName) {
+	for (Event event : EventList.getINSTANCE().getEventList()) {
+	    if (event.getTitle().equals(eventName)) {
+		return event;
+	    }
+	}
+	return null;
     }
 
     private void quitSession() {

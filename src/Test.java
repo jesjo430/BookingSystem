@@ -8,12 +8,15 @@ public class Test
      * Event.txt the file containing data about the saved events.
      */
     public static final String EVENT_TXT = "event.txt";
-    public static final String SECTION_TXT = "section.txt";
 
     public static void main(String[] args) {
+
 	EventList.getINSTANCE().loadEventListFromFile();
 
 	new WindowFrame();
+
+
+
 
 	ReadFile read = new ReadFile();
 	String string = read.ReadFile(EVENT_TXT);
