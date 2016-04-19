@@ -28,7 +28,6 @@ public class SeatComponent extends JComponent
 	return Color.GRAY;
     }
 
-
     @Override public Dimension getPreferredSize() {
 	return new Dimension(CHAIR_SIZE, CHAIR_SIZE);
     }

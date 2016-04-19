@@ -1,3 +1,4 @@
+import jdk.nashorn.internal.runtime.RewriteException;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -23,10 +24,14 @@ public class WindowFrame extends JFrame
     private JLabel freeSeats;
     private JLabel bookedSeats;
 
+    private User user;
+
     private int horizontalStrut = 10;
 
 
     public WindowFrame() {
+	loginDialog();
+
 	frame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 	frame.setLayout(new BorderLayout());
 
@@ -38,6 +43,36 @@ public class WindowFrame extends JFrame
 	contents.setLayout(new MigLayout("", "[grow][][]","[grow][][]"));
 
 	initContent();
+    }
+
+    private void loginDialog() {
+	JPanel myPanel = new JPanel();
+	myPanel.setLayout(new MigLayout());
+	JTextField username = new JTextField();
+	JTextField password = new JTextField();
+
+	myPanel.add(new JLabel("Username:"));
+	myPanel.add(username, "wrap, width 100");
+
+	myPanel.add(new JLabel("Password:"));
+	myPanel.add(password, "width 100");
+
+	int answer = JOptionPane.showConfirmDialog(null, myPanel, "Login", JOptionPane.OK_CANCEL_OPTION);
+	if (answer == JOptionPane.OK_OPTION) {
+	    User currentUser = UserList.getInstance().getUserFromString(username.getText());
+	    if (!currentUser.getName().equals("false") && currentUser.getPassword().equals(password.getText()))
+	    {
+		user = currentUser;
+	    }
+
+	    else {
+		JOptionPane.showMessageDialog(null, "Incorrect Username or Password.");
+		loginDialog();
+	    }
+	}
+	else {
+	    quitSession();
+	}
     }
 
     private void initContent() {
@@ -69,7 +104,6 @@ public class WindowFrame extends JFrame
 	    @Override public void actionPerformed(final ActionEvent e) {
 		for (SeatComponent seatC : SeatComponent.getMarkedSeats()) {
 		    seatC.getSeat().setStatus(true);
-
 
 		    String chairInfo = createToolTipString(seatC);
 		    seatC.setToolTipText(chairInfo);
@@ -303,6 +337,8 @@ public class WindowFrame extends JFrame
     }
 
     public void openEditEventDialog() {
+	//fixme make this function not to throw away old section with old bookings.
+
 	String message = "Create new event";
 	JPanel myPanel = new JPanel(new MigLayout());
 	StringBuilder sb = new StringBuilder();
@@ -344,7 +380,7 @@ public class WindowFrame extends JFrame
 
     private void quitSession() {
 	WriteFile wf = new WriteFile(EventList.getINSTANCE().writeEventToFile(), Test.EVENT_TXT);
-	System.out.println(wf);
+	UserList.getInstance().writeUserListToFile();
 	System.exit(0);
     }
 }

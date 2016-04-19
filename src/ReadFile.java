@@ -8,15 +8,12 @@ import java.io.IOException;
 
 public class ReadFile
 {
-    public ReadFile() {
-	System.out.println("READ");
-    }
-
-    public String ReadFile(final String fileName) {
+    public String readFiles(final String fileName) {
+	System.out.println("READ" + fileName);
 	try {
 	    File file = new File(fileName);
 	    FileReader fileReader = new FileReader(file);
-	    StringBuffer stringBuffer = new StringBuffer();
+	    StringBuilder stringBuffer = new StringBuilder();
 	    int numCharsRead;
 	    char[] charArray = new char[1024];
 	    while ((numCharsRead = fileReader.read(charArray)) > 0) {

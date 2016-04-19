@@ -1,11 +1,13 @@
 public class NormalUser implements User
 {
     private String name;
-    private String authorisation = "Normal";
+    private String authorisation;
+    private String password;
 
-    public NormalUser(final String name, final String authorisation) {
+    public NormalUser(final String name, final String password) {
 	this.name = name;
-	this.authorisation = authorisation;
+	this.password = password;
+	authorisation = "normal";
     }
 
     public String getName() {
@@ -16,5 +18,8 @@ public class NormalUser implements User
 	return authorisation;
     }
 
+    public String getPassword() {
+	return password;
+    }
 
 }

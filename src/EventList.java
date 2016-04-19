@@ -44,7 +44,7 @@ public final class EventList
 
     public void loadEventListFromFile() {
 	ReadFile read = new ReadFile();
-	String readEventString = read.ReadFile(Test.EVENT_TXT);
+	String readEventString = read.readFiles(Test.EVENT_TXT);
 	String[] eventLists = readEventString.split("¤");
 	for (String strings : eventLists) {
 	    String[] eventDetails = strings.split("'");
@@ -74,6 +74,7 @@ public final class EventList
 	    }
 	}
     }
+
 }
 
 

@@ -9,23 +9,16 @@ public class Test
      */
     public static final String EVENT_TXT = "event.txt";
 
+    /**
+     * User.txt the file containing data about the saved users.
+     */
+    public static final String USER_TXT = "user.txt";
+
     public static void main(String[] args) {
 
+	UserList.getInstance().loadUserListFromFile();
 	EventList.getINSTANCE().loadEventListFromFile();
 
 	new WindowFrame();
-
-
-
-
-	ReadFile read = new ReadFile();
-	String string = read.ReadFile(EVENT_TXT);
-	System.out.println(string);
-
-	System.out.println(" \n ------------------------------------------------------------------ \n");
-
-	System.out.println("DONE!");
-
-//	System.exit(0);
     }
 }
