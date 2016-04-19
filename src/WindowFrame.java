@@ -57,18 +57,24 @@ public class WindowFrame extends JFrame
 	myPanel.add(new JLabel("Password:"));
 	myPanel.add(password, "width 100");
 
-	int answer = JOptionPane.showConfirmDialog(null, myPanel, "Login", JOptionPane.OK_CANCEL_OPTION);
-	if (answer == JOptionPane.OK_OPTION) {
+	String[] options = new String[] {"Cancel", "Create new user", "Login"};
+	int answer = JOptionPane.showOptionDialog(null, myPanel, "Login",
+	        JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+	        null, options, options[2]);
+
+	if (answer == 2) {
 	    User currentUser = UserList.getInstance().getUserFromString(username.getText());
 	    if (!currentUser.getName().equals("false") && currentUser.getPassword().equals(password.getText()))
 	    {
 		user = currentUser;
 	    }
-
 	    else {
 		JOptionPane.showMessageDialog(null, "Incorrect Username or Password.");
 		loginDialog();
 	    }
+	}
+	if (answer == 1) {
+	    openNewUserDialog();
 	}
 	else {
 	    quitSession();
@@ -376,6 +382,27 @@ public class WindowFrame extends JFrame
 	    }
 	}
 	return new Event(new Section(1,1), "Failed to find event", "", "");
+    }
+
+    private void openNewUserDialog() {
+	JPanel myPanel = new JPanel();
+	myPanel.setLayout(new MigLayout());
+	JTextField username = new JTextField();
+	JTextField password = new JTextField();
+	JTextArea information = new JTextArea("Welcome please enter the following account-information:");
+
+	myPanel.add(information, "north, wrap");
+
+	myPanel.add(new JLabel("New username:"));
+	myPanel.add(username, "wrap, width 100");
+
+	myPanel.add(new JLabel("Password:"));
+	myPanel.add(password, "width 100");
+
+	String[] options = new String[] {"Cancel", "Create new user"};
+	int answer = JOptionPane.showOptionDialog(null, myPanel, "Login",
+						  JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+						  null, options, options[1]);
     }
 
     private void quitSession() {

@@ -23,6 +23,15 @@ public class UserList
 	return userList;
     }
 
+    public static String[] usernameList() {
+	StringBuilder sb = new StringBuilder();
+	for (User user: UserList.getInstance().userList) {
+	    sb.append(user.getName());
+	    sb.append("#");
+	}
+	return sb.toString().split("#");
+    }
+
     public User getUserFromString(String input) {
 	for (User user : userList) {
 	    if (user.getName().equals(input)) {
