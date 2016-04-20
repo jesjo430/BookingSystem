@@ -1,16 +1,12 @@
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 /**
  * Listnera
  */
 
-public class SectionListener implements MouseListener
+public class SectionListener extends MouseAdapter
 {
-
-    @Override public void mouseClicked(final MouseEvent e) {
-    }
-
     /**
      * Listens to mouseClicks on the SeatComponents.
      * @param e what SeatComponent.
@@ -29,12 +25,4 @@ public class SectionListener implements MouseListener
 	seatC.repaint();
     }
 
-    @Override public void mouseReleased(final MouseEvent e) {
-    }
-
-    @Override public void mouseEntered(final MouseEvent e) {
-    }
-
-    @Override public void mouseExited(final MouseEvent e) {
-    }
 }

@@ -51,7 +51,7 @@ public final class EventList
      */
     public void loadEventListFromFile() {
 	ReadFile read = new ReadFile();
-	String readEventString = read.readFiles(Test.EVENT_TXT);
+	String readEventString = read.readFiles(Main.EVENT_TXT);
 	String[] eventLists = readEventString.split("¤");
 	for (String strings : eventLists) {
 	    String[] eventDetails = strings.split("'");
@@ -60,7 +60,7 @@ public final class EventList
 		Event event = new Event(section, eventDetails[6], eventDetails[8], eventDetails[10]);
 		EventList.getINSTANCE().addToEventList(event);
 
-		String[] bookings = eventDetails[12].split(" ");
+		String[] bookings = eventDetails[12].split(" "); // magic number not fixed baecause ive chooesn readability in the file.
 		int row = 0;
 		int seat = 0;
 		for(String seatStatus : bookings) {

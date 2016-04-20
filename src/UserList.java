@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * List over users, Singelton.
+ */
 public class UserList
 {
     private List<User> userList;
