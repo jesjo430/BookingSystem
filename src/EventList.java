@@ -60,10 +60,11 @@ public final class EventList
 		Event event = new Event(section, eventDetails[6], eventDetails[8], eventDetails[10]);
 		EventList.getINSTANCE().addToEventList(event);
 
-		String[] bookings = eventDetails[12].split(" "); // magic number not fixed baecause ive chooesn readability in the file.
+		String[] bookings = eventDetails[12].split(" "); // magic number not fixed baecause I've chooesen read-ability in the file.
 		int row = 0;
 		int seat = 0;
 		for(String seatStatus : bookings) {
+		    String[] statusAndName = seatStatus.split("@");
 		    if(seat == Integer.parseInt(eventDetails[4])) {
 			seat = 0;
 			row += 1;
@@ -71,17 +72,17 @@ public final class EventList
 		    if(row == Integer.parseInt(eventDetails[2])) {
 			break;
 		    }
-		    if (!seatStatus.equals("false")) {
-			section.getSeatAt(row, seat).book();
-			System.out.println("JJFHKF");
+		    if (!statusAndName[0].equals("false")) {
+			if(statusAndName.length > 1) {
+			    section.getSeatAt(row, seat).book(statusAndName[1]);
+			}
+			section.getSeatAt(row, seat).book("null");
 		    }
 		    seat += 1;
-
 		}
 	    }
 	}
     }
-
 }
 
 

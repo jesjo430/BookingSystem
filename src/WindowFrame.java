@@ -24,6 +24,7 @@ public class WindowFrame extends JFrame
     private SectionComponent sectionC;
     private JLabel freeSeats;
     private JLabel bookedSeats;
+    public static User user;
 
     public WindowFrame() {
 	frame = new JFrame(WINDOW_TITLE);
@@ -37,6 +38,7 @@ public class WindowFrame extends JFrame
 	contents.setBackground(FRAME_COLOR);
 	contents.setLayout(new MigLayout("", "[grow][][]","[grow][][]"));
 
+	loginDialog();
 	initContent();
     }
 
@@ -62,6 +64,36 @@ public class WindowFrame extends JFrame
 	frame.setVisible(true);
     }
 
+    private void loginDialog() {
+   	JPanel myPanel = new JPanel();
+   	myPanel.setLayout(new MigLayout());
+   	JTextField username = new JTextField();
+   	JTextField password = new JTextField();
+
+   	myPanel.add(new JLabel("Username:"));
+   	myPanel.add(username, "wrap, width 100");
+
+   	myPanel.add(new JLabel("Password:"));
+   	myPanel.add(password, "width 100");
+
+   	int answer = JOptionPane.showConfirmDialog(null, myPanel, "Login", JOptionPane.OK_CANCEL_OPTION);
+   	if (answer == JOptionPane.OK_OPTION) {
+   	    User currentUser = UserList.getInstance().getUserFromString(username.getText());
+   	    if (!currentUser.getName().equals("false") && currentUser.getPassword().equals(password.getText()))
+   	    {
+   		user = currentUser;
+   	    }
+
+   	    else {
+   		JOptionPane.showMessageDialog(null, "Incorrect Username or Password.");
+   		loginDialog();
+   	    }
+   	}
+   	else {
+   	    quitSession();
+   	}
+       }
+
     /**
      * Generates a JPanel containing the JButtons.
      * @return JPanel with buttons and actionlisteners.
@@ -73,7 +105,7 @@ public class WindowFrame extends JFrame
 	{
 	    @Override public void actionPerformed(final ActionEvent e) {
 		for (SeatComponent seatC : SeatComponent.getMarkedSeats()) {
-		    seatC.getSeat().setStatus(true);
+		    seatC.getSeat().book(user.getName());
 
 		    String chairInfo = createToolTipString(seatC);
 		    seatC.setToolTipText(chairInfo);
@@ -116,8 +148,8 @@ public class WindowFrame extends JFrame
 
 		    Event newEvent = getEventFromString(selectedValuesList.get(0)); //the first and only element.
 		    SectionComponent newSectionComponent = newEvent.getSectionC();
+		    currentEvent.getSection().unmarkAllSeats();
 		    currentEvent = newEvent;
-		    SeatComponent.getMarkedSeats().clear();
 		    updateContentPane(newSectionComponent);
 	        }
 	    }
@@ -233,12 +265,14 @@ public class WindowFrame extends JFrame
      */
     private void addMenuBar() {
 	JMenuBar menuBar = new JMenuBar();
-	JMenu fileMenu, editMenu, helpMenu;
+	JMenu fileMenu, editMenu, helpMenu, sectionMenu;
 
 	JMenuItem exitItem = new JMenuItem("Quit");
 
 	JMenuItem newEvent = new JMenuItem("New event");
 	JMenuItem editEvent = new JMenuItem("Edit event");
+
+	JMenuItem clearSection = new JMenuItem("Clear bookings");
 
 	JMenuItem instructionsItem = new JMenuItem("Instructions");
 
@@ -274,7 +308,18 @@ public class WindowFrame extends JFrame
 	    }
 	});
 
+	sectionMenu = new JMenu("Section");
+	sectionMenu.setMnemonic('S');
 
+	clearSection.setAccelerator(KeyStroke.getKeyStroke('C', ActionEvent.CTRL_MASK));
+	clearSection.addActionListener(new ActionListener()
+	{
+	    @Override public void actionPerformed(final ActionEvent e) {
+		sectionC.getSection().unBookAllSeats();
+		frame.getContentPane().removeAll();
+		initContent();
+	    }
+	});
 
 	helpMenu = new JMenu("Help");
 	helpMenu.setMnemonic('H');
@@ -291,10 +336,12 @@ public class WindowFrame extends JFrame
 	fileMenu.add(exitItem);
 	editMenu.add(newEvent);
 	editMenu.add(editEvent);
+	sectionMenu.add(clearSection);
 	helpMenu.add(instructionsItem);
 
 	menuBar.add(fileMenu);
 	menuBar.add(editMenu);
+	menuBar.add(sectionMenu);
 	menuBar.add(Box.createHorizontalGlue());
 	menuBar.add(helpMenu);
 	frame.setJMenuBar(menuBar);

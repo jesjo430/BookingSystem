@@ -53,7 +53,7 @@ public class Event
 	       ",title='" + title + '\'' +
 	       ", time='" + time + '\'' +
 	       ", date='" + date + '\'' +
-	       ", bookedChairs='" + section.getBookedChairsCordinates() + "\'" +
+	       ", bookedChairs='" + section.getChairStatusAndName() + "\'" +
 	       "},";
     }
 }

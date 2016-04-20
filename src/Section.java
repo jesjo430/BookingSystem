@@ -56,11 +56,30 @@ public class Section
 	return totalSeats;
     }
 
-   public String getBookedChairsCordinates() {
+    public void unBookAllSeats() {
+	for (Seat[] row : seats) {
+	    for (Seat seat : row) {
+		seat.setStatus(false);
+		seat.setSeatIsMarked(false);
+	    }
+	}
+    }
+
+    public void unmarkAllSeats() {
+	for (Seat[] row : seats) {
+	    for (Seat seat : row) {
+		seat.setSeatIsMarked(false);
+	    }
+	}
+    }
+
+    public String getChairStatusAndName() {
        StringBuilder stringBuilder = new StringBuilder();
        for (Seat[] row : seats) {
 	   for (Seat seat : row) {
 	       stringBuilder.append(seat.getStatus());
+	       stringBuilder.append("@");
+	       stringBuilder.append(seat.getName());
 	       stringBuilder.append(" ");
 	   }
        }

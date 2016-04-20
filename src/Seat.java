@@ -27,20 +27,21 @@ public class Seat
     }
 
     /**
-     * changes the current status of the this object if not true.
+     * changes the current status of the this object if not true. setter to status, with some conditions.
      */
-    public void book() {
-    	if (!status) {
+    public void book(String bookName) {
+	if (!status) {
     	    status = true;
+	    this.name = bookName;
     	}
-    }
-
-    public void setStatus(final boolean status) {
-	this.status = status;
     }
 
     public boolean getStatus() {
 	return status;
+    }
+
+    public void setStatus(final boolean status) {
+	this.status = status;
     }
 
     public String getName() {

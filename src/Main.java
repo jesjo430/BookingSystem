@@ -14,6 +14,7 @@ public final class Main
      */
     public static final String USER_TXT = "user.txt";
 
+
     private Main() {}
 
     public static void main(String[] args) {
