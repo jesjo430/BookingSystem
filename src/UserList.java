@@ -61,6 +61,10 @@ public final class UserList
 		    User newNU = new NormalUser(userData[1], userData[2]);
 		    UserList.getOurInstance().addToUserList(newNU);
 		}
+		else if (userData[3].equals("admin")) {
+		    User newNU = new AdminUser(userData[1], userData[2]);
+		    UserList.getOurInstance().addToUserList(newNU);
+		}
 	    }
 	}
     }

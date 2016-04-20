@@ -94,7 +94,7 @@ public class WindowFrame extends JFrame
    	    }
    	}
    	else {
-   	    quitSession();
+   	    System.exit(0); //so noone can get in without login.
    	}
        }
 
@@ -116,6 +116,8 @@ public class WindowFrame extends JFrame
 
 		    updateInfoPanel();
 		    seatC.repaint();
+		    openDefaultMessageBox("Your seat(s) has been booked!");
+		    //fixme make this not able too book a allready booked seat.
 		}
 	    }
 	});
@@ -293,37 +295,53 @@ public class WindowFrame extends JFrame
 	    }
 	});
 
-	editMenu = new JMenu("Edit");
-	editMenu.setMnemonic('E');
+	menuBar.add(fileMenu);
 
-	newEvent.setAccelerator(KeyStroke.getKeyStroke('N', ActionEvent.CTRL_MASK));
-	newEvent.addActionListener(new ActionListener()
-	{
-	    @Override public void actionPerformed(final ActionEvent e) {
-		openNewEventDialog("Create new Event", null);
-	    }
-	});
+	if(user.getAuthorisation().equals("admin")) {
+	    editMenu = new JMenu("Edit");
+	    editMenu.setMnemonic('E');
 
-	editEvent.setAccelerator(KeyStroke.getKeyStroke('E', ActionEvent.CTRL_MASK));
-	editEvent.addActionListener(new ActionListener()
-	{
-	    @Override public void actionPerformed(final ActionEvent e) {
-		openEditEventDialog();
-	    }
-	});
+	    newEvent.setAccelerator(KeyStroke.getKeyStroke('N', ActionEvent.CTRL_MASK));
+	    newEvent.addActionListener(new ActionListener()
+	    {
+		@Override public void actionPerformed(final ActionEvent e) {
+		    openNewEventDialog("Create new Event", null);
+		}
+	    });
 
-	sectionMenu = new JMenu("Section");
-	sectionMenu.setMnemonic('S');
+	    editEvent.setAccelerator(KeyStroke.getKeyStroke('E', ActionEvent.CTRL_MASK));
+	    editEvent.addActionListener(new ActionListener()
+	    {
+		@Override public void actionPerformed(final ActionEvent e) {
+		    openEditEventDialog();
+		}
+	    });
 
-	clearSection.setAccelerator(KeyStroke.getKeyStroke('C', ActionEvent.CTRL_MASK));
-	clearSection.addActionListener(new ActionListener()
-	{
-	    @Override public void actionPerformed(final ActionEvent e) {
-		sectionC.getSection().unBookAllSeats();
-		frame.getContentPane().removeAll();
-		initContent();
-	    }
-	});
+	    sectionMenu = new JMenu("Section");
+	    sectionMenu.setMnemonic('S');
+
+	    clearSection.setAccelerator(KeyStroke.getKeyStroke('C', ActionEvent.CTRL_MASK));
+	    clearSection.addActionListener(new ActionListener()
+	    {
+		@Override public void actionPerformed(final ActionEvent e) {
+		    if (openYesNoMessageBox("Clear all booked seats",
+					    "Are you sure you want to remove all booked seats on '" + currentEvent.getTitle() +
+					    "'?")) {
+			sectionC.getSection().unBookAllSeats();
+			frame.getContentPane().removeAll();
+			initContent();
+			openDefaultMessageBox(currentEvent.getTitle() + " has been cleared from all bookings.");
+		    }
+		}
+	    });
+
+	    editMenu.add(editEvent);
+	    sectionMenu.add(clearSection);
+	    editMenu.add(newEvent);
+
+	    menuBar.add(editMenu);
+	    menuBar.add(sectionMenu);
+	}
 
 	helpMenu = new JMenu("Help");
 	helpMenu.setMnemonic('H');
@@ -338,14 +356,9 @@ public class WindowFrame extends JFrame
 
 
 	fileMenu.add(exitItem);
-	editMenu.add(newEvent);
-	editMenu.add(editEvent);
-	sectionMenu.add(clearSection);
+
 	helpMenu.add(instructionsItem);
 
-	menuBar.add(fileMenu);
-	menuBar.add(editMenu);
-	menuBar.add(sectionMenu);
 	menuBar.add(Box.createHorizontalGlue());
 	menuBar.add(helpMenu);
 	frame.setJMenuBar(menuBar);
@@ -395,7 +408,10 @@ public class WindowFrame extends JFrame
 	    if (event != null) { //if there is any current event. to save the old sections data (bookings).
 		newEvent.setSectionC(event.getSectionC());
 	    }
-
+	    openDefaultMessageBox(currentEvent.getTitle() + " has been saved.");
+	}
+	else {
+	    openDefaultMessageBox(currentEvent.getTitle() + " has NOT been saved.");
 	}
 	updateContentPane(sectionC);
     }
@@ -450,8 +466,22 @@ public class WindowFrame extends JFrame
      * Exits program, saves the current eventList and userlist.
      */
     private void quitSession() {
-	WriteFile wf = new WriteFile(EventList.getINSTANCE().writeEventToFile(), Main.EVENT_TXT);
-	UserList.getOurInstance().writeUserListToFile();
-	System.exit(0);
+	if(openYesNoMessageBox("Exit program", "Are you sure you want to exit the client?")) {
+	    WriteFile wf = new WriteFile(EventList.getINSTANCE().writeEventToFile(), Main.EVENT_TXT);
+	    UserList.getOurInstance().writeUserListToFile();
+	    System.exit(0);
+	}
+    }
+
+    private boolean openYesNoMessageBox(String boxTitle, String question) {
+	int answer = JOptionPane.showConfirmDialog(null, question, boxTitle, JOptionPane.YES_NO_OPTION);
+	if (answer == JOptionPane.YES_OPTION) {
+	    return true;
+	}
+	return false;
+    }
+
+    private void openDefaultMessageBox(String message) {
+	JOptionPane.showConfirmDialog(null, message, "Confirmation", JOptionPane.DEFAULT_OPTION);
     }
 }

@@ -21,5 +21,7 @@ public final class Main
 	EventList.getINSTANCE().loadEventListFromFile();
 
 	new WindowFrame();
+
+	new NormalUser("natta","natta");
     }
 }
