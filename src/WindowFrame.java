@@ -24,7 +24,11 @@ public class WindowFrame extends JFrame
     private SectionComponent sectionC;
     private JLabel freeSeats;
     private JLabel bookedSeats;
-    public static User user;
+
+    /**
+     * The current active user.
+     */
+    public User user = null;
 
     public WindowFrame() {
 	frame = new JFrame(WINDOW_TITLE);
@@ -78,11 +82,11 @@ public class WindowFrame extends JFrame
 
    	int answer = JOptionPane.showConfirmDialog(null, myPanel, "Login", JOptionPane.OK_CANCEL_OPTION);
    	if (answer == JOptionPane.OK_OPTION) {
-   	    User currentUser = UserList.getInstance().getUserFromString(username.getText());
+   	    User currentUser = UserList.getOurInstance().getUserFromString(username.getText());
    	    if (!currentUser.getName().equals("false") && currentUser.getPassword().equals(password.getText()))
    	    {
-   		user = currentUser;
-   	    }
+		user = currentUser;
+	    }
 
    	    else {
    		JOptionPane.showMessageDialog(null, "Incorrect Username or Password.");
@@ -447,7 +451,7 @@ public class WindowFrame extends JFrame
      */
     private void quitSession() {
 	WriteFile wf = new WriteFile(EventList.getINSTANCE().writeEventToFile(), Main.EVENT_TXT);
-	UserList.getInstance().writeUserListToFile();
+	UserList.getOurInstance().writeUserListToFile();
 	System.exit(0);
     }
 }

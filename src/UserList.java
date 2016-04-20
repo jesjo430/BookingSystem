@@ -4,35 +4,22 @@ import java.util.List;
 /**
  * List over users, Singelton.
  */
-public class UserList
+public final class UserList
 {
     private List<User> userList;
 
     private static UserList ourInstance = new UserList();
 
-    public static UserList getInstance() {
+    public static UserList getOurInstance() {
 	return ourInstance;
     }
 
     private UserList() {
-        this.userList = new ArrayList<User>();
+        this.userList = new ArrayList<>();
     }
 
     public void addToUserList(User user) {
         userList.add(user);
-    }
-
-    public List<User> getUserList() {
-	return userList;
-    }
-
-    public static String[] usernameList() {
-	StringBuilder sb = new StringBuilder();
-	for (User user: UserList.getInstance().userList) {
-	    sb.append(user.getName());
-	    sb.append("#");
-	}
-	return sb.toString().split("#");
     }
 
     public User getUserFromString(String input) {
@@ -72,7 +59,7 @@ public class UserList
 	    if (userData.length > 2) {
 		if (userData[3].equals("normal")) {
 		    User newNU = new NormalUser(userData[1], userData[2]);
-		    UserList.getInstance().addToUserList(newNU);
+		    UserList.getOurInstance().addToUserList(newNU);
 		}
 	    }
 	}

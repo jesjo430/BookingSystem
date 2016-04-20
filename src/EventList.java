@@ -60,7 +60,7 @@ public final class EventList
 		Event event = new Event(section, eventDetails[6], eventDetails[8], eventDetails[10]);
 		EventList.getINSTANCE().addToEventList(event);
 
-		String[] bookings = eventDetails[12].split(" "); // magic number not fixed baecause I've chooesen read-ability in the file.
+		String[] bookings = eventDetails[2*6].split(" "); // magic number not fixed baecause I've chooesen read-ability in the file.
 		int row = 0;
 		int seat = 0;
 		for(String seatStatus : bookings) {

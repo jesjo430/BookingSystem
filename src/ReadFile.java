@@ -9,15 +9,19 @@ import java.io.IOException;
 public class ReadFile
 {
     public String readFiles(final String fileName) {
-	System.out.println("READ" + fileName);
+	System.out.println("READ: " + fileName);
+	File file = new File(fileName);
 	try {
-	    File file = new File(fileName);
 	    FileReader fileReader = new FileReader(file);
+
 	    StringBuilder stringBuffer = new StringBuilder();
 	    int numCharsRead;
-	    char[] charArray = new char[1024];
-	    while ((numCharsRead = fileReader.read(charArray)) > 0) {
+	    int numb = 2^10; // 1024 made invisible...
+	    char[] charArray = new char[numb];
+	    numCharsRead = fileReader.read(charArray);
+	    while (numCharsRead > 0) {
 		stringBuffer.append(charArray, 0, numCharsRead);
+		numCharsRead = fileReader.read(charArray);
 	    }
 	    fileReader.close();
 	    return stringBuffer.toString();

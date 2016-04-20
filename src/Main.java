@@ -1,7 +1,6 @@
 /**
- * Main running program.
+ * Main running programfiles.
  */
-
 public final class Main
 {
     /**
@@ -18,7 +17,7 @@ public final class Main
     private Main() {}
 
     public static void main(String[] args) {
-        UserList.getInstance().loadUserListFromFile();
+        UserList.getOurInstance().loadUserListFromFile();
 	EventList.getINSTANCE().loadEventListFromFile();
 
 	new WindowFrame();
