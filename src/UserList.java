@@ -62,7 +62,7 @@ public class UserList
 
     public void loadUserListFromFile() {
 	ReadFile read = new ReadFile();
-	String readUserString = read.readFiles(Test.USER_TXT);
+	String readUserString = read.readFiles(Main.USER_TXT);
 	String[] userList = readUserString.split("¤");
 	for (String user : userList) {
 	    String[] userData = user.split("'");

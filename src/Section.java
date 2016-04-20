@@ -44,7 +44,7 @@ public class Section
 	int amount = 0;
 	for (Seat[] row : seats) {
 	    for (Seat seat : row) {
-		if (!seat.getIsBooked()) {
+		if (!seat.getStatus()) {
 		    amount += 1;
 		}
 	    }
@@ -60,7 +60,7 @@ public class Section
        StringBuilder stringBuilder = new StringBuilder();
        for (Seat[] row : seats) {
 	   for (Seat seat : row) {
-	       stringBuilder.append(seat.getIsBooked());
+	       stringBuilder.append(seat.getStatus());
 	       stringBuilder.append(" ");
 	   }
        }

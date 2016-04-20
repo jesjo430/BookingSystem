@@ -11,6 +11,10 @@ public class SectionListener implements MouseListener
     @Override public void mouseClicked(final MouseEvent e) {
     }
 
+    /**
+     * Listens to mouseClicks on the SeatComponents.
+     * @param e what SeatComponent.
+     */
     @Override public void mousePressed(final MouseEvent e) {
 	SeatComponent seatC = (SeatComponent) e.getSource();
 

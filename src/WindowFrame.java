@@ -117,7 +117,7 @@ public class WindowFrame extends JFrame
 		    Event newEvent = getEventFromString(selectedValuesList.get(0)); //the first and only element.
 		    SectionComponent newSectionComponent = newEvent.getSectionC();
 		    currentEvent = newEvent;
-
+		    SeatComponent.getMarkedSeats().clear();
 		    updateContentPane(newSectionComponent);
 	        }
 	    }
@@ -399,7 +399,7 @@ public class WindowFrame extends JFrame
      * Exits program, saves the current eventList and userlist.
      */
     private void quitSession() {
-	WriteFile wf = new WriteFile(EventList.getINSTANCE().writeEventToFile(), Test.EVENT_TXT);
+	WriteFile wf = new WriteFile(EventList.getINSTANCE().writeEventToFile(), Main.EVENT_TXT);
 	UserList.getInstance().writeUserListToFile();
 	System.exit(0);
     }

@@ -42,6 +42,10 @@ public class Event
 	return date;
     }
 
+    /**
+     * used when writing events to event.file.
+     * @return Srnigversion of event.
+     */
     @Override public String toString() {
 	return "'Event{" +
 	       ",sectionHeight='" + section.getHeight() + "\'" +

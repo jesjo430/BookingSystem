@@ -14,7 +14,7 @@ public class SectionComponent extends JComponent
     }
 
     private Color getSeatColorAt(int y, int x, Section section) {
-	if (section.getSeats()[y][x].getIsBooked()) {
+	if (section.getSeats()[y][x].getStatus()) {
 	    return Color.PINK;
 	}
 	return Color.BLACK;

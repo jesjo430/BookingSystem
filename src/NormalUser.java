@@ -1,3 +1,6 @@
+/**
+ * Normal user implements User.
+ */
 public class NormalUser implements User
 {
     private String name;

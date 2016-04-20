@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * yep
+ * Seat representation as a JComponent.
  */
 
 public class SeatComponent extends JComponent
 {
-    private Seat seat;
+    private final Seat seat;
     private static List<SeatComponent> markedSeats = new ArrayList<>();
 
     private static final int CHAIR_SIZE = 20;
@@ -19,7 +19,7 @@ public class SeatComponent extends JComponent
     }
 
     private Color getSeatColorAt() {
-	if (seat.getIsBooked()) {
+	if (seat.getStatus()) {
 	    return Color.RED;
 	}
 	else if (seat.seatIsMarked) {

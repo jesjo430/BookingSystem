@@ -1,5 +1,3 @@
-import java.util.List;
-
 /**
  * The representation of every seat, containing info as status that tells if seat is free,
  * eventuall name of booker and row- and seat-number on the section it belongs.
@@ -28,6 +26,9 @@ public class Seat
 	this.name = null;
     }
 
+    /**
+     * changes the current status of the this object if not true.
+     */
     public void book() {
     	if (!status) {
     	    status = true;
@@ -38,7 +39,7 @@ public class Seat
 	this.status = status;
     }
 
-    public boolean getIsBooked() {
+    public boolean getStatus() {
 	return status;
     }
 

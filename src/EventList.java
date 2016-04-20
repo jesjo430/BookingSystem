@@ -31,6 +31,10 @@ public final class EventList
         return eventList;
     }
 
+    /**
+     * creates a String with all events from eventList represented.
+     * @return String with eventdata.
+     */
     public String writeEventToFile() {
    	StringBuilder text = new StringBuilder();
    	for (Event event : eventList) {
@@ -42,6 +46,9 @@ public final class EventList
    	return text.toString();
        }
 
+    /**
+     * Loads and pushes events written on event.file to the EventList.
+     */
     public void loadEventListFromFile() {
 	ReadFile read = new ReadFile();
 	String readEventString = read.readFiles(Test.EVENT_TXT);
