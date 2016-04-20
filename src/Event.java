@@ -26,6 +26,10 @@ public class Event
 	return sectionC;
     }
 
+    public void setSectionC(final SectionComponent sectionC) {
+	this.sectionC = sectionC;
+    }
+
     public String getTitle() {
 	return title;
     }

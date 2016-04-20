@@ -1,4 +1,3 @@
-import jdk.nashorn.internal.runtime.RewriteException;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -17,81 +16,43 @@ import java.util.List;
 public class WindowFrame extends JFrame
 {
     private static final int EVENT_TITLE_FONT_SIZE = 25;
+    private static final String WINDOW_TITLE = "Booking client";
+    private static final Color FRAME_COLOR = Color.PINK;
 
-    private JFrame frame = new JFrame("WindowTitle");
+    private final JFrame frame;
     private Event currentEvent;
     private SectionComponent sectionC;
     private JLabel freeSeats;
     private JLabel bookedSeats;
 
-    private User user;
-
-    private int horizontalStrut = 10;
-
-
     public WindowFrame() {
-	loginDialog();
-
+	frame = new JFrame(WINDOW_TITLE);
+	Container contents = frame.getContentPane();
 	frame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 	frame.setLayout(new BorderLayout());
 
 	currentEvent = EventList.getINSTANCE().getEventList().get(0);
 	sectionC  = currentEvent.getSectionC();
 
-	Container contents = frame.getContentPane();
-	contents.setBackground(Color.PINK);
+	contents.setBackground(FRAME_COLOR);
 	contents.setLayout(new MigLayout("", "[grow][][]","[grow][][]"));
 
 	initContent();
     }
 
-    private void loginDialog() {
-	JPanel myPanel = new JPanel();
-	myPanel.setLayout(new MigLayout());
-	JTextField username = new JTextField();
-	JTextField password = new JTextField();
-
-	myPanel.add(new JLabel("Username:"));
-	myPanel.add(username, "wrap, width 100");
-
-	myPanel.add(new JLabel("Password:"));
-	myPanel.add(password, "width 100");
-
-	String[] options = new String[] {"Cancel", "Create new user", "Login"};
-	int answer = JOptionPane.showOptionDialog(null, myPanel, "Login",
-	        JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
-	        null, options, options[2]);
-
-	if (answer == 2) {
-	    User currentUser = UserList.getInstance().getUserFromString(username.getText());
-	    if (!currentUser.getName().equals("false") && currentUser.getPassword().equals(password.getText()))
-	    {
-		user = currentUser;
-	    }
-	    else {
-		JOptionPane.showMessageDialog(null, "Incorrect Username or Password.");
-		loginDialog();
-	    }
-	}
-	if (answer == 1) {
-	    openNewUserDialog();
-	}
-	else {
-	    quitSession();
-	}
-    }
-
+    /**
+     * Initializes all components that belongs to the contentpane.
+     * Sets layout, titles and sets visibility.
+     */
     private void initContent() {
 	Container contents = frame.getContentPane();
 
 	JLabel eventTitle = new JLabel(currentEvent.getTitle());
 	Font titleFont = new Font("Times New Roman", Font.BOLD, EVENT_TITLE_FONT_SIZE);
 	eventTitle.setFont(titleFont);
-
 	addMenuBar();
 
 	contents.add(eventTitle, "gap 50px, width 30, height 40, wrap");
-
 	contents.add(createSectionGrid(sectionC));
 	contents.add(createEventSelectionPanel(), "top, wrap");
 	contents.add(createInfoPanel());
@@ -101,9 +62,12 @@ public class WindowFrame extends JFrame
 	frame.setVisible(true);
     }
 
+    /**
+     * Generates a JPanel containing the JButtons.
+     * @return JPanel with buttons and actionlisteners.
+     */
     private JPanel createButtons() {
 	JPanel panel = new JPanel();
-
 	JButton book = new JButton("Book");
 	book.addActionListener(new ActionListener()
 	{
@@ -127,12 +91,15 @@ public class WindowFrame extends JFrame
 		quitSession();
 	    }
 	});
-
 	panel.add(book);
 	panel.add(exit);
 	return panel;
     }
 
+    /**
+     * Generates a JPanel containing a selectable list with all Events.
+     * @return JPanel with listeners and current Events.
+     */
     private JPanel createEventSelectionPanel() {
 	DefaultListModel<String> listModel = new DefaultListModel<>();
 	JList<String> eventList = new JList<>(listModel);
@@ -141,14 +108,13 @@ public class WindowFrame extends JFrame
 	    listModel.addElement(e.getTitle());
 	}
 
-
 	eventList.addListSelectionListener(new ListSelectionListener() {
 	    @Override public void valueChanged(ListSelectionEvent e)
 	    {
 	        if(!e.getValueIsAdjusting()) {
 		    List<String> selectedValuesList = eventList.getSelectedValuesList();
 
-		    Event newEvent = getEventFromString(selectedValuesList.get(0));
+		    Event newEvent = getEventFromString(selectedValuesList.get(0)); //the first and only element.
 		    SectionComponent newSectionComponent = newEvent.getSectionC();
 		    currentEvent = newEvent;
 
@@ -164,6 +130,10 @@ public class WindowFrame extends JFrame
 	return infoPanel;
     }
 
+    /**
+     * updates the contentpane by first removing all its content and the reproduces it with initContent().
+     * @param sectionComponent The new comopnent to replace sectionC.
+     */
     private void updateContentPane(SectionComponent sectionComponent) {
 	frame.getContentPane().removeAll();
 	sectionC = sectionComponent;
@@ -171,6 +141,11 @@ public class WindowFrame extends JFrame
 	frame.repaint();
     }
 
+    /**
+     * Looks up what eventuall event that corresponds to comp String.
+     * @param comp value to check.
+     * @return the event coresponding to comp. if no match: returns the first event in EventList.
+     */
     private Event getEventFromString(String comp) {
 	for (Event event : EventList.getINSTANCE().getEventList()) {
 	    if (event.getTitle().equals(comp)) {
@@ -180,11 +155,15 @@ public class WindowFrame extends JFrame
 	return EventList.getINSTANCE().getEventList().get(0);
     }
 
+    /**
+     *  Generates a JPanel with the SeatComponents in a grid with sizes given from section.
+     * @param sectionComp corresponnding sectionComponent.
+     * @return JPanel containing SeatComponents.
+     */
     private JPanel createSectionGrid(SectionComponent sectionComp) {
 	JPanel sectionPanel = new JPanel();
 	sectionPanel.setBackground(Color.BLACK);
-
-	sectionPanel.setLayout(new MigLayout("gap 5"));
+	sectionPanel.setLayout(new MigLayout("gap 5")); //gap 5 --> gapsize in ox between added objects.
 	Section section = sectionComp.getSection();
 
 	for (int h = 0; h < section.getHeight() ; h++) {
@@ -206,6 +185,11 @@ public class WindowFrame extends JFrame
 	return sectionPanel;
     }
 
+    /**
+     * Creates a String with seat and row label from a SeatComponent.
+     * @param seatC current SeatComponent to get seciton values from.
+     * @return String with Seat and Row.
+     */
     private String createToolTipString(SeatComponent seatC) {
 	String chairRow = Integer.toString((seatC.getSeat().getRow()));
 	String chairSeat = Integer.toString((seatC.getSeat().getSeat()));
@@ -219,6 +203,10 @@ public class WindowFrame extends JFrame
 	return text;
     }
 
+    /**
+     * Generates a JPanel with two labels: free and booked, with corresponding data.
+     * @return JPanel with free and booked status.
+     */
     private JPanel createInfoPanel() {
 	JPanel infoPanel = new JPanel();
 	infoPanel.setLayout(new MigLayout());
@@ -232,11 +220,17 @@ public class WindowFrame extends JFrame
 	return infoPanel;
     }
 
+    /**
+     * updates the infoPanel's values.
+     */
     private void updateInfoPanel() {
 	freeSeats.setText("Free: " + currentEvent.getSectionC().getSection().getAmountOfFreeSeats());
 	bookedSeats.setText("Booked: " + (sectionC.getSection().getTotalSeats() - currentEvent.getSectionC().getSection().getAmountOfFreeSeats()));
     }
 
+    /**
+     * Adds a manubar to the menubararea in the frame.
+     */
     private void addMenuBar() {
 	JMenuBar menuBar = new JMenuBar();
 	JMenu fileMenu, editMenu, helpMenu;
@@ -306,6 +300,11 @@ public class WindowFrame extends JFrame
 	frame.setJMenuBar(menuBar);
     }
 
+    /**
+     * Creates and opens a Dialogbox with inputs for a new event, its parameters.
+     * @param windowTitle title for the pop-up window.
+     * @param event eventuall current event.
+     */
     public void openNewEventDialog(String windowTitle, Event event) {
 	JTextField title = new JTextField(5);
 	JTextField date = new JTextField(5);
@@ -313,7 +312,7 @@ public class WindowFrame extends JFrame
 	JTextField sectionh = new JTextField(5);
 	JTextField sectionw = new JTextField(5);
 
-	if (event != null) {
+	if (event != null) { //if there is any current event.
 	    title.setText(event.getTitle());
 	    date.setText(event.getDate());
 	    time.setText(event.getTime());
@@ -322,30 +321,40 @@ public class WindowFrame extends JFrame
 	}
 
 	JPanel myPanel = new JPanel();
-	myPanel.add(new JLabel("x:"));
-	myPanel.add(title);
-	myPanel.add(date);
-	myPanel.add(time);
+	myPanel.setLayout(new MigLayout());
+	myPanel.add(new JLabel("Title:"));
+	myPanel.add(title, "wrap");
+	myPanel.add(new JLabel("Date:"));
+	myPanel.add(date, "wrap");
+	myPanel.add(new JLabel("Time:"));
+	myPanel.add(time, "wrap");
 
-	myPanel.add(Box.createHorizontalStrut(horizontalStrut)); // a spacer
-	myPanel.add(new JLabel("y:"));
+	myPanel.add(new JLabel("SectionSize:"));
 	myPanel.add(sectionh);
-	myPanel.add(sectionw);
+	myPanel.add(new JLabel("x"));
+	myPanel.add(sectionw, "wrap");
 
 
 	int result = JOptionPane.showConfirmDialog(null, myPanel, windowTitle, JOptionPane.OK_CANCEL_OPTION);
 	if (result == JOptionPane.OK_OPTION) {
-	    Event newEvent = new Event(new Section(Integer.parseInt(sectionh.getText()), Integer.parseInt(sectionw.getText())),
+	    Event newEvent = new Event(new Section(Integer.parseInt(sectionh.getText()),
+						   Integer.parseInt(sectionw.getText())),
 				       title.getText(), time.getText(), date.getText());
 	    EventList.getINSTANCE().addToEventList(newEvent);
+	    if (event != null) { //if there is any current event. to save the old sections data (bookings).
+		newEvent.setSectionC(event.getSectionC());
+	    }
+
 	}
 	updateContentPane(sectionC);
     }
 
+    /**
+     * Creates and opens a dialog that contains the list over current events.
+     * these are selectanble and will on OK be sent to openNewEventDialog().
+     */
     public void openEditEventDialog() {
-	//fixme make this function not to throw away old section with old bookings.
-
-	String message = "Create new event";
+	String windowTitle = "Edit event";
 	JPanel myPanel = new JPanel(new MigLayout());
 	StringBuilder sb = new StringBuilder();
 
@@ -356,15 +365,12 @@ public class WindowFrame extends JFrame
 
 	String sbToString = sb.toString();
 	List<String> event = new ArrayList<>(Arrays.asList(sbToString.split("'")));
-
 	JList<Object> eventList = new JList<>(event.toArray());
 
 	myPanel.add(new JLabel("Select the event you would like to edit: "), "wrap");
 	myPanel.add(eventList, "width 250");
-	myPanel.add(Box.createHorizontalStrut(horizontalStrut)); // a spacer
 
-
-	int result = JOptionPane.showConfirmDialog(null, myPanel, message, JOptionPane.OK_CANCEL_OPTION);
+	int result = JOptionPane.showConfirmDialog(null, myPanel, windowTitle, JOptionPane.OK_CANCEL_OPTION);
 	if (result == JOptionPane.OK_OPTION) {
 	    int marked = eventList.getSelectedIndex();
 
@@ -375,6 +381,11 @@ public class WindowFrame extends JFrame
 	}
     }
 
+    /**
+     * Picks a event from its title that corresponsd to the given string.
+     * @param eventName String to compare with titles in EventList.
+     * @return An event that had the same title as the eventName. if none: returns a new Event with title: Failed to find event.
+     */
     private Event findEventFromString(String eventName) {
 	for (Event event : EventList.getINSTANCE().getEventList()) {
 	    if (event.getTitle().equals(eventName)) {
@@ -384,27 +395,9 @@ public class WindowFrame extends JFrame
 	return new Event(new Section(1,1), "Failed to find event", "", "");
     }
 
-    private void openNewUserDialog() {
-	JPanel myPanel = new JPanel();
-	myPanel.setLayout(new MigLayout());
-	JTextField username = new JTextField();
-	JTextField password = new JTextField();
-	JTextArea information = new JTextArea("Welcome please enter the following account-information:");
-
-	myPanel.add(information, "north, wrap");
-
-	myPanel.add(new JLabel("New username:"));
-	myPanel.add(username, "wrap, width 100");
-
-	myPanel.add(new JLabel("Password:"));
-	myPanel.add(password, "width 100");
-
-	String[] options = new String[] {"Cancel", "Create new user"};
-	int answer = JOptionPane.showOptionDialog(null, myPanel, "Login",
-						  JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
-						  null, options, options[1]);
-    }
-
+    /**
+     * Exits program, saves the current eventList and userlist.
+     */
     private void quitSession() {
 	WriteFile wf = new WriteFile(EventList.getINSTANCE().writeEventToFile(), Test.EVENT_TXT);
 	UserList.getInstance().writeUserListToFile();
