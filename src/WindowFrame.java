@@ -1,10 +1,13 @@
 import net.miginfocom.swing.MigLayout;
+
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,7 +20,7 @@ public class WindowFrame extends JFrame
 {
     private static final int EVENT_TITLE_FONT_SIZE = 25;
     private static final String WINDOW_TITLE = "Booking client";
-    private static final Color FRAME_COLOR = Color.PINK;
+    private static final Color FRAME_COLOR = Color.decode("#7E0D05");
 
     private final JFrame frame;
     private Event currentEvent;
@@ -58,11 +61,15 @@ public class WindowFrame extends JFrame
 	eventTitle.setFont(titleFont);
 	addMenuBar();
 
+	addImageToPane();
+
+
 	contents.add(eventTitle, "gap 50px, width 30, height 40, wrap");
 	contents.add(createSectionGrid(sectionC));
 	contents.add(createEventSelectionPanel(), "top, wrap");
 	contents.add(createInfoPanel());
 	contents.add(createButtons());
+
 
 	frame.pack();
 	frame.setVisible(true);
@@ -479,6 +486,15 @@ public class WindowFrame extends JFrame
 	    return true;
 	}
 	return false;
+    }
+
+    private void addImageToPane() {
+	ImageIcon image = new ImageIcon("rodakvarn.jpg");
+	JLabel label = new JLabel("", image, SwingConstants.CENTER);
+	JPanel panel = new JPanel(new BorderLayout());
+	panel.add(label, BorderLayout.CENTER );
+
+	frame.getContentPane().add(panel, "wrap, pushx");
     }
 
     private void openDefaultMessageBox(String message) {
