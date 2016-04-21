@@ -45,7 +45,7 @@ public class WindowFrame extends JFrame
 	sectionC  = currentEvent.getSectionC();
 
 	contents.setBackground(FRAME_COLOR);
-	contents.setLayout(new MigLayout("", "[grow][][]","[grow][]"));
+	contents.setLayout(new MigLayout("debug", "[grow][][][]","[grow][]"));
 
 	loginDialog();
 	initContent();
@@ -71,7 +71,7 @@ public class WindowFrame extends JFrame
 
 	contents.add(eventTitle, "gap 100px, width 30, height 40, wrap");
 	contents.add(createSectionGrid(sectionC), "split 2, gap 20px");
-	contents.add(createEventSelectionPanel(), "top, gap 30px, wrap");
+	contents.add(createEventSelectionPanel(), "top, gap 20px, span, wrap");
 	contents.add(createInfoPanel(), "split 2, gap 25px");
 	contents.add(createButtons(), "gap 690px");
 
@@ -187,8 +187,10 @@ public class WindowFrame extends JFrame
 	});
 
 	eventList.setSelectionBackground(Color.GRAY);
-	JPanel infoPanel = new JPanel();
-	infoPanel.add(eventList);
+	JPanel infoPanel = new JPanel(new MigLayout("debug, gap 20px"));
+	infoPanel.setBackground(FRAME_COLOR);
+	infoPanel.add(eventList, "wrap");
+	infoPanel.add(frame.getContentPane().add(createEventInfoPanel(currentEvent)), "width 300");
 
 	return infoPanel;
     }
@@ -283,6 +285,19 @@ public class WindowFrame extends JFrame
 	infoPanel.add(bookedSeats);
 
 	return infoPanel;
+    }
+
+    private JPanel createEventInfoPanel(Event event) {
+	JPanel eventPanel = new JPanel();
+	eventPanel.setLayout(new MigLayout());
+
+	JLabel title = new JLabel(event.getTitle());
+	JTextArea infoArea = new JTextArea();
+
+	eventPanel.add(title, "wrap");
+	eventPanel.add(infoArea, "growx, growy");
+
+	return eventPanel;
     }
 
     /**
