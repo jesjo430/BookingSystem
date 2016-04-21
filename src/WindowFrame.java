@@ -1,22 +1,24 @@
 import net.miginfocom.swing.MigLayout;
-
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.awt.event.InputEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This class is the window of the program. It contains components.
  */
-
 public class WindowFrame extends JFrame
 {
+    private final static Logger LOGGER = Logger.getLogger(WindowFrame.class.getName());
+
     private static final int EVENT_TITLE_FONT_SIZE = 25;
     private static final String WINDOW_TITLE = "Booking client";
     private static final Color FRAME_COLOR = Color.decode("#7E0D05");
@@ -26,7 +28,6 @@ public class WindowFrame extends JFrame
     private SectionComponent sectionC;
     private JLabel freeSeats;
     private JLabel bookedSeats;
-    public static boolean seatIsMarked = false;
 
     /**
      * The current active user.
@@ -36,7 +37,7 @@ public class WindowFrame extends JFrame
     public WindowFrame() {
 	frame = new JFrame(WINDOW_TITLE);
 	Container contents = frame.getContentPane();
-	frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+	frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	frame.setLayout(new BorderLayout());
 
 	currentEvent = EventList.getINSTANCE().getEventList().get(0);
@@ -50,6 +51,7 @@ public class WindowFrame extends JFrame
 
 	assert currentEvent != null : "No currentEvent assigned! Pointer null.";
 	assert sectionC != null : "No sectionC assigned! Pointer null.";
+	assert user != null : " No user was assigned!";
     }
 
     /**
@@ -94,21 +96,19 @@ public class WindowFrame extends JFrame
    	    if (!currentUser.getName().equals("false") && currentUser.getPassword().equals(password.getText()))
    	    {
 		user = currentUser;
+		LOGGER.log(Level.INFO, "currentUser was changed.");
 	    }
 
    	    else {
    		JOptionPane.showMessageDialog(null, "Incorrect Username or Password.");
    		loginDialog();
+		LOGGER.log(Level.INFO, "Failed to login.");
    	    }
    	}
    	else {
    	    System.exit(0); //so no-one can get in without login.
    	}
        }
-
-    public static void setSeatIsMarked(final boolean seatIsMarked) {
-	WindowFrame.seatIsMarked = seatIsMarked;
-    }
 
     /**
      * Generates a JPanel containing the JButtons.
@@ -134,6 +134,7 @@ public class WindowFrame extends JFrame
 		    openDefaultMessageBox("Your seat(s) has been booked!");
 		}
 		else { //if no seat was marked befor clicking book.
+		    LOGGER.log(Level.INFO, "No selection was made. --> No booking was executed.");
 		    openDefaultMessageBox("Please select a seat before booking.");
 		}
 	    }
@@ -167,6 +168,7 @@ public class WindowFrame extends JFrame
 	    @Override public void valueChanged(ListSelectionEvent e)
 	    {
 	        if(!e.getValueIsAdjusting()) {
+		    LOGGER.log(Level.INFO, "A event in the eventlist was clicked.");
 		    List<String> selectedValuesList = eventList.getSelectedValuesList();
 
 		    Event newEvent = getEventFromString(selectedValuesList.get(0)); //the first and only element.
@@ -174,7 +176,9 @@ public class WindowFrame extends JFrame
 		    currentEvent.getSection().unmarkAllSeats();
 		    currentEvent = newEvent;
 		    updateContentPane(newSectionComponent);
+		    LOGGER.log(Level.INFO, "currentEvent has been changed.");
 	        }
+		LOGGER.log(Level.SEVERE, "Value in eventSelectionPanel was changed but no changes has been done.");
 	    }
 	});
 
@@ -194,6 +198,7 @@ public class WindowFrame extends JFrame
 	sectionC = sectionComponent;
 	initContent();
 	frame.repaint();
+	LOGGER.log(Level.INFO, "Contentpane updated.");
     }
 
     /**
@@ -207,6 +212,7 @@ public class WindowFrame extends JFrame
 		return event;
 	    }
 	}
+	LOGGER.log(Level.SEVERE, "No event matched the string, 1st element in eventlist was given.");
 	return EventList.getINSTANCE().getEventList().get(0);
     }
 
@@ -302,7 +308,7 @@ public class WindowFrame extends JFrame
 	fileMenu.setMnemonic('F');
 
 	fileMenu.addSeparator();
-	exitItem.setAccelerator(KeyStroke.getKeyStroke('Q' ,ActionEvent.CTRL_MASK));
+	exitItem.setAccelerator(KeyStroke.getKeyStroke('Q' , InputEvent.CTRL_DOWN_MASK));
 	exitItem.setToolTipText("Exit application");
 	exitItem.addActionListener(new ActionListener() {
 	    @Override public void actionPerformed(ActionEvent event) {
@@ -313,10 +319,11 @@ public class WindowFrame extends JFrame
 	menuBar.add(fileMenu);
 
 	if(user.getAuthorisation().equals("admin")) {
+	    LOGGER.log(Level.INFO, "Admin-User was found.");
 	    JMenu editMenu = new JMenu("Edit");
 	    editMenu.setMnemonic('E');
 
-	    newEvent.setAccelerator(KeyStroke.getKeyStroke('N', ActionEvent.CTRL_MASK));
+	    newEvent.setAccelerator(KeyStroke.getKeyStroke('N', InputEvent.CTRL_DOWN_MASK));
 	    newEvent.addActionListener(new ActionListener()
 	    {
 		@Override public void actionPerformed(final ActionEvent e) {
@@ -324,7 +331,7 @@ public class WindowFrame extends JFrame
 		}
 	    });
 
-	    editEvent.setAccelerator(KeyStroke.getKeyStroke('E', ActionEvent.CTRL_MASK));
+	    editEvent.setAccelerator(KeyStroke.getKeyStroke('E', InputEvent.CTRL_DOWN_MASK));
 	    editEvent.addActionListener(new ActionListener()
 	    {
 		@Override public void actionPerformed(final ActionEvent e) {
@@ -335,7 +342,7 @@ public class WindowFrame extends JFrame
 	    JMenu sectionMenu = new JMenu("Section");
 	    sectionMenu.setMnemonic('S');
 
-	    clearSection.setAccelerator(KeyStroke.getKeyStroke('C', ActionEvent.CTRL_MASK));
+	    clearSection.setAccelerator(KeyStroke.getKeyStroke('C', InputEvent.CTRL_DOWN_MASK));
 	    clearSection.addActionListener(new ActionListener()
 	    {
 		@Override public void actionPerformed(final ActionEvent e) {
@@ -346,6 +353,7 @@ public class WindowFrame extends JFrame
 			frame.getContentPane().removeAll();
 			initContent();
 			openDefaultMessageBox(currentEvent.getTitle() + " has been cleared from all bookings.");
+			LOGGER.log(Level.INFO, "All bookings in event: " + currentEvent + " was removed.");
 		    }
 		}
 	    });
@@ -361,10 +369,11 @@ public class WindowFrame extends JFrame
 	helpMenu = new JMenu("Help");
 	helpMenu.setMnemonic('H');
 
-	instructionsItem.setAccelerator(KeyStroke.getKeyStroke('I' ,ActionEvent.CTRL_MASK));
+	instructionsItem.setAccelerator(KeyStroke.getKeyStroke('I' , InputEvent.CTRL_DOWN_MASK));
 	instructionsItem.setToolTipText("Instructions");
 	instructionsItem.addActionListener(new ActionListener() {
 	    @Override public void actionPerformed(ActionEvent event) {
+		LOGGER.log(Level.INFO, "Instructions was not avalible.");
 		JOptionPane.showMessageDialog(frame, "Sorry, no instructions avalible.");
 	    }
 	});
@@ -392,6 +401,7 @@ public class WindowFrame extends JFrame
 	JTextField sectionw = new JTextField(5);
 
 	if (event != null) { //if there is any current event.
+	    LOGGER.log(Level.INFO, "Added info about old event to new event dialog.");
 	    title.setText(event.getTitle());
 	    date.setText(event.getDate());
 	    time.setText(event.getTime());
@@ -420,13 +430,16 @@ public class WindowFrame extends JFrame
 						   Integer.parseInt(sectionw.getText())),
 				       title.getText(), time.getText(), date.getText());
 	    EventList.getINSTANCE().addToEventList(newEvent);
+	    LOGGER.log(Level.INFO, "A new event " + newEvent + " was created.");
 	    if (event != null) { //if there is any current event. to save the old sections data (bookings).
 		newEvent.setSectionC(event.getSectionC());
+		LOGGER.log(Level.INFO, "The event " + newEvent + " was given its old sectionComponent.");
 	    }
 	    openDefaultMessageBox(currentEvent.getTitle() + " has been saved.");
 	}
 	else {
 	    openDefaultMessageBox(currentEvent.getTitle() + " has NOT been saved.");
+	    LOGGER.log(Level.SEVERE, "The new Event was not saved!");
 	}
 	updateContentPane(sectionC);
     }
@@ -475,6 +488,7 @@ public class WindowFrame extends JFrame
 		return event;
 	    }
 	}
+	LOGGER.log(Level.SEVERE, "No event was found with the given string.");
 	throw new ExceptionInInitializerError("No event was found from given string.");
     }
 
@@ -483,8 +497,13 @@ public class WindowFrame extends JFrame
      */
     private void quitSession() {
 	if(openYesNoMessageBox("Exit program", "Are you sure you want to exit the client?")) {
+
 	    WriteFile wf = new WriteFile(EventList.getINSTANCE().writeEventToFile(), Main.EVENT_TXT);
 	    UserList.getOurInstance().writeUserListToFile();
+
+	    LOGGER.log(Level.INFO, String.format("EventList %s was written to file.", wf));
+	    LOGGER.log(Level.INFO, "UserList was written to file.");
+	    LOGGER.log(Level.INFO, "Session was closed.");
 	    System.exit(0);
 	    //fixme help...
 	}
