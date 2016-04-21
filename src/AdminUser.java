@@ -11,6 +11,7 @@ public class AdminUser implements User
     	this.name = name;
     	this.password = password;
     	authorisation = "admin";
+	addToUserList();
     }
 
     @Override public String getName() {
@@ -24,4 +25,8 @@ public class AdminUser implements User
     @Override public String getPassword() {
 	return password;
     }
+
+    public void addToUserList() {
+    	UserList.getOurInstance().addToUserList(this);
+        }
 }

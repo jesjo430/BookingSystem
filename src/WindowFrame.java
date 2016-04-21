@@ -7,7 +7,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,6 +26,7 @@ public class WindowFrame extends JFrame
     private SectionComponent sectionC;
     private JLabel freeSeats;
     private JLabel bookedSeats;
+    public static boolean seatIsMarked = false;
 
     /**
      * The current active user.
@@ -36,17 +36,20 @@ public class WindowFrame extends JFrame
     public WindowFrame() {
 	frame = new JFrame(WINDOW_TITLE);
 	Container contents = frame.getContentPane();
-	frame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+	frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	frame.setLayout(new BorderLayout());
 
 	currentEvent = EventList.getINSTANCE().getEventList().get(0);
 	sectionC  = currentEvent.getSectionC();
 
 	contents.setBackground(FRAME_COLOR);
-	contents.setLayout(new MigLayout("", "[grow][][]","[grow][][]"));
+	contents.setLayout(new MigLayout("", "[grow][][]","[grow][]"));
 
 	loginDialog();
 	initContent();
+
+	assert currentEvent != null : "No currentEvent assigned! Pointer null.";
+	assert sectionC != null : "No sectionC assigned! Pointer null.";
     }
 
     /**
@@ -63,13 +66,11 @@ public class WindowFrame extends JFrame
 
 	addImageToPane();
 
-
-	contents.add(eventTitle, "gap 50px, width 30, height 40, wrap");
-	contents.add(createSectionGrid(sectionC));
-	contents.add(createEventSelectionPanel(), "top, wrap");
-	contents.add(createInfoPanel());
-	contents.add(createButtons());
-
+	contents.add(eventTitle, "gap 100px, width 30, height 40, wrap");
+	contents.add(createSectionGrid(sectionC), "split 2, gap 20px");
+	contents.add(createEventSelectionPanel(), "top, gap 30px, wrap");
+	contents.add(createInfoPanel(), "split 2, gap 25px");
+	contents.add(createButtons(), "gap 690px");
 
 	frame.pack();
 	frame.setVisible(true);
@@ -101,9 +102,13 @@ public class WindowFrame extends JFrame
    	    }
    	}
    	else {
-   	    System.exit(0); //so noone can get in without login.
+   	    System.exit(0); //so no-one can get in without login.
    	}
        }
+
+    public static void setSeatIsMarked(final boolean seatIsMarked) {
+	WindowFrame.seatIsMarked = seatIsMarked;
+    }
 
     /**
      * Generates a JPanel containing the JButtons.
@@ -115,16 +120,21 @@ public class WindowFrame extends JFrame
 	book.addActionListener(new ActionListener()
 	{
 	    @Override public void actionPerformed(final ActionEvent e) {
-		for (SeatComponent seatC : SeatComponent.getMarkedSeats()) {
-		    seatC.getSeat().book(user.getName());
+		if (!SeatComponent.getMarkedSeats().isEmpty()) { //If any seat has been marked.
+		    for (SeatComponent seatC : SeatComponent.getMarkedSeats()) {
+			seatC.getSeat().book(user.getName());
 
-		    String chairInfo = createToolTipString(seatC);
-		    seatC.setToolTipText(chairInfo);
+			String chairInfo = createToolTipString(seatC);
+			seatC.setToolTipText(chairInfo);
 
-		    updateInfoPanel();
-		    seatC.repaint();
+			updateInfoPanel();
+			seatC.repaint();
+		    }
+		    SeatComponent.getMarkedSeats().removeAll(SeatComponent.getMarkedSeats());
 		    openDefaultMessageBox("Your seat(s) has been booked!");
-		    //fixme make this not able too book a allready booked seat.
+		}
+		else { //if no seat was marked befor clicking book.
+		    openDefaultMessageBox("Please select a seat before booking.");
 		}
 	    }
 	});
@@ -278,17 +288,15 @@ public class WindowFrame extends JFrame
      */
     private void addMenuBar() {
 	JMenuBar menuBar = new JMenuBar();
-	JMenu fileMenu, editMenu, helpMenu, sectionMenu;
+	JMenu fileMenu, helpMenu;
+
+	assert menuBar != null: "No menuBar was created, pointer null";
 
 	JMenuItem exitItem = new JMenuItem("Quit");
-
 	JMenuItem newEvent = new JMenuItem("New event");
 	JMenuItem editEvent = new JMenuItem("Edit event");
-
 	JMenuItem clearSection = new JMenuItem("Clear bookings");
-
 	JMenuItem instructionsItem = new JMenuItem("Instructions");
-
 
 	fileMenu = new JMenu("File");
 	fileMenu.setMnemonic('F');
@@ -305,7 +313,7 @@ public class WindowFrame extends JFrame
 	menuBar.add(fileMenu);
 
 	if(user.getAuthorisation().equals("admin")) {
-	    editMenu = new JMenu("Edit");
+	    JMenu editMenu = new JMenu("Edit");
 	    editMenu.setMnemonic('E');
 
 	    newEvent.setAccelerator(KeyStroke.getKeyStroke('N', ActionEvent.CTRL_MASK));
@@ -324,7 +332,7 @@ public class WindowFrame extends JFrame
 		}
 	    });
 
-	    sectionMenu = new JMenu("Section");
+	    JMenu sectionMenu = new JMenu("Section");
 	    sectionMenu.setMnemonic('S');
 
 	    clearSection.setAccelerator(KeyStroke.getKeyStroke('C', ActionEvent.CTRL_MASK));
@@ -460,13 +468,14 @@ public class WindowFrame extends JFrame
      * @param eventName String to compare with titles in EventList.
      * @return An event that had the same title as the eventName. if none: returns a new Event with title: Failed to find event.
      */
-    private Event findEventFromString(String eventName) {
+    private Event findEventFromString(String eventName) throws ExceptionInInitializerError  {
+	assert EventList.getINSTANCE().getEventList() != null : "EventList pointer null.";
 	for (Event event : EventList.getINSTANCE().getEventList()) {
 	    if (event.getTitle().equals(eventName)) {
 		return event;
 	    }
 	}
-	return new Event(new Section(1,1), "Failed to find event", "", "");
+	throw new ExceptionInInitializerError("No event was found from given string.");
     }
 
     /**
@@ -477,9 +486,16 @@ public class WindowFrame extends JFrame
 	    WriteFile wf = new WriteFile(EventList.getINSTANCE().writeEventToFile(), Main.EVENT_TXT);
 	    UserList.getOurInstance().writeUserListToFile();
 	    System.exit(0);
+	    //fixme help...
 	}
     }
 
+    /**
+     * Opens a dialogbox with a question.
+     * @param boxTitle must be string.
+     * @param question must be question.
+     * @return the answer on the given question as boolean.
+     */
     private boolean openYesNoMessageBox(String boxTitle, String question) {
 	int answer = JOptionPane.showConfirmDialog(null, question, boxTitle, JOptionPane.YES_NO_OPTION);
 	if (answer == JOptionPane.YES_OPTION) {
@@ -488,15 +504,23 @@ public class WindowFrame extends JFrame
 	return false;
     }
 
+    /**
+     * adds coded image as header on the contentpane.
+     */
     private void addImageToPane() {
 	ImageIcon image = new ImageIcon("rodakvarn.jpg");
+	assert image != null: "Header image not loaded!";
 	JLabel label = new JLabel("", image, SwingConstants.CENTER);
 	JPanel panel = new JPanel(new BorderLayout());
 	panel.add(label, BorderLayout.CENTER );
 
-	frame.getContentPane().add(panel, "wrap, pushx");
+	frame.getContentPane().add(panel, "wrap 2");
     }
 
+    /**
+     * Opens a dialogbox with a OK button.
+     * @param message can be any string.
+     */
     private void openDefaultMessageBox(String message) {
 	JOptionPane.showConfirmDialog(null, message, "Confirmation", JOptionPane.DEFAULT_OPTION);
     }

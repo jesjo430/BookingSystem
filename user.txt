@@ -1,3 +1,3 @@
-User:'¤'jesper'jesper'normal'
-¤'jjesper'jjesper'admin'
-
+User:'¤'j'j'admin'
+¤'jesper'jesper'normal'
+¤'natta'natta'normal'

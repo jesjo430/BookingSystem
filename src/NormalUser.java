@@ -11,6 +11,7 @@ public class NormalUser implements User
 	this.name = name;
 	this.password = password;
 	authorisation = "normal";
+	addToUserList();
     }
 
     public String getName() {
@@ -25,4 +26,7 @@ public class NormalUser implements User
 	return password;
     }
 
+    public void addToUserList() {
+	UserList.getOurInstance().addToUserList(this);
+    }
 }

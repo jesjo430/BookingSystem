@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,15 +9,14 @@ import java.util.List;
 public final class EventList
 {
     private List<Event> eventList;
-
     private final static EventList INSTANCE = new EventList();
-
-    public static EventList getINSTANCE() {
-	return INSTANCE;
-    }
 
     private EventList() {
         this.eventList = new ArrayList<>();
+    }
+
+    public static EventList getINSTANCE() {
+	return INSTANCE;
     }
 
     public void addToEventList(Event event) {
@@ -37,19 +37,19 @@ public final class EventList
      */
     public String writeEventToFile() {
    	StringBuilder text = new StringBuilder();
+	assert eventList != null: "Eventlist is empty.";
    	for (Event event : eventList) {
             text.append(event);
 	    text.append("¤");
 	    text.append("\n");
         }
-
    	return text.toString();
        }
 
     /**
-     * Loads and pushes events written on event.file to the EventList.
+     * Loads and pushes events written on event file to the EventList.
      */
-    public void loadEventListFromFile() {
+    public void loadEventListFromFile() throws IOException {
 	ReadFile read = new ReadFile();
 	String readEventString = read.readFiles(Main.EVENT_TXT);
 	String[] eventLists = readEventString.split("¤");

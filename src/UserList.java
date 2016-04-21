@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +51,18 @@ public final class UserList
 	new WriteFile(sb.toString(), "user.txt");
     }
 
-    public void loadUserListFromFile() {
+    public boolean doesUserNameExist(String user) {
+	for (User usr : userList) {
+	    if (usr.getName().equals(user)) {
+		return true;
+	    }
+	}
+	return false;
+    }
+
+    // FIXME: 21/04/16 users added twice.
+
+    public void loadUserListFromFile() throws IOException {
 	ReadFile read = new ReadFile();
 	String readUserString = read.readFiles(Main.USER_TXT);
 	String[] userList = readUserString.split("¤");

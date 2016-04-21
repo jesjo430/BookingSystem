@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 /**
  * Main running programfiles.
  */
@@ -17,11 +19,19 @@ public final class Main
     private Main() {}
 
     public static void main(String[] args) {
-        UserList.getOurInstance().loadUserListFromFile();
-	EventList.getINSTANCE().loadEventListFromFile();
+	try {
+	    UserList.getOurInstance().loadUserListFromFile();
+	}
+	catch (IOException e) {
+	    e.printStackTrace();
+	}
+
+	try {
+	    EventList.getINSTANCE().loadEventListFromFile();
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
 
 	new WindowFrame();
-
-	new NormalUser("natta","natta");
     }
 }

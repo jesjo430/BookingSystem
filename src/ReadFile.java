@@ -8,7 +8,12 @@ import java.io.IOException;
 
 public class ReadFile
 {
-    public String readFiles(final String fileName) {
+    /**
+     * Reads data from files.
+     * @param fileName must be a string that exists in project folder.
+     * @return a string with data from loaded file.
+     */
+    public String readFiles(final String fileName) throws IOException {
 	System.out.println("READ: " + fileName);
 	File file = new File(fileName);
 	try {
@@ -16,8 +21,8 @@ public class ReadFile
 
 	    StringBuilder stringBuffer = new StringBuilder();
 	    int numCharsRead;
-	    int numb = 2^10; // 1024 made invisible...
-	    char[] charArray = new char[numb];
+	    int charSize = 2^10;
+	    char[] charArray = new char[charSize];
 	    numCharsRead = fileReader.read(charArray);
 	    while (numCharsRead > 0) {
 		stringBuffer.append(charArray, 0, numCharsRead);
@@ -29,6 +34,6 @@ public class ReadFile
 	catch (IOException e) {
 	    e.printStackTrace();
 	}
-	return "Failed reading.";
+	throw new IOException("Could not read file" + fileName +".");
     }
 }
