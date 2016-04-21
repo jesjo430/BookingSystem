@@ -1,15 +1,12 @@
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * List over users, Singelton.
  */
 public final class UserList
 {
-    private final static Logger LOGGER = Logger.getLogger(UserList.class.getName());
     private static UserList ourInstance = new UserList();
     private List<User> userList;
 
@@ -34,7 +31,7 @@ public final class UserList
 	return new NormalUser("false", "false");
     }
 
-    public void writeUserListToFile() {
+    public String writeUserListToFile() {
 	StringBuilder sb = new StringBuilder();
 	sb.append("User:'");
 
@@ -50,8 +47,7 @@ public final class UserList
 	    sb.append(user.getAuthorisation());
 	    sb.append("'\n");
 	}
-	WriteFile wf = new WriteFile(sb.toString(), "user.txt");
-	LOGGER.log(Level.INFO, String.format("File %s was written to.", wf));
+	return sb.toString();
     }
 
     public void loadUserListFromFile() throws IOException {

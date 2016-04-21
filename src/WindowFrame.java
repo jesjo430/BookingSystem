@@ -496,11 +496,12 @@ public class WindowFrame extends JFrame
     private void quitSession() {
 	if(openYesNoMessageBox("Exit program", "Are you sure you want to exit the client?")) {
 
-	    WriteFile wf = new WriteFile(EventList.getINSTANCE().writeEventToFile(), Main.EVENT_TXT);
+	    WriteFile wfE = new WriteFile(EventList.getINSTANCE().writeEventToFile(), Main.EVENT_TXT);
+	    WriteFile wfU = new WriteFile(UserList.getOurInstance().writeUserListToFile(), Main.USER_TXT);
 	    UserList.getOurInstance().writeUserListToFile();
 
-	    LOGGER.log(Level.INFO, String.format("EventList %s was written to file.", wf));
-	    LOGGER.log(Level.INFO, "UserList was written to file.");
+	    LOGGER.log(Level.INFO, String.format("EventList %s was written to file.", wfE));
+	    LOGGER.log(Level.INFO, String.format("UserList %s was written to file.", wfU));
 	    LOGGER.log(Level.INFO, "Session was closed.");
 	    System.exit(0);
 	    //fixme help...

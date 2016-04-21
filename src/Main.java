@@ -40,10 +40,6 @@ public final class Main
 	    e.printStackTrace();
 	}
 
-	LOGGER.log(Level.INFO, "message 1");
-	LOGGER.log(Level.SEVERE, "message 2");
-	LOGGER.log(Level.FINEST, "message 3");
-
 	WindowFrame wf = new WindowFrame();
 	LOGGER.log(Level.INFO, "Window " + wf + " is running.");
     }
