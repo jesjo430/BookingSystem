@@ -1,12 +1,16 @@
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * List over users, Singelton.
  */
 public final class UserList
 {
+    private final static Logger LOGGER = Logger.getLogger(UserList.class.getName());
+
     private static UserList ourInstance = new UserList();
     private List<User> userList;
 
@@ -28,7 +32,9 @@ public final class UserList
 		return user;
 	    }
 	}
-	return new NormalUser("false", "false");
+	LOGGER.log(Level.SEVERE, "no user was found from given string.");
+	LOGGER.log(Level.INFO, "False user was created.");
+	return new User("false", "false", null);
     }
 
     public String writeUserListToFile() {
@@ -57,13 +63,16 @@ public final class UserList
 	for (String user : userList) {
 	    String[] userData = user.split("'");
 	    if (userData.length > 2) {
-		if (userData[3].equals("normal")) {
-		    User newNU = new NormalUser(userData[1], userData[2]);
+		if (userData[3].equals(Authorization.NORMAL.toString())) {
+		    User newNU = new User(userData[1], userData[2], Authorization.NORMAL);
 		    UserList.getOurInstance().addToUserList(newNU);
 		}
-		else if (userData[3].equals("admin")) {
-		    User newNU = new AdminUser(userData[1], userData[2]);
+		else if (userData[3].equals(Authorization.ADMIN.toString())) {
+		    User newNU = new User(userData[1], userData[2], Authorization.ADMIN);
 		    UserList.getOurInstance().addToUserList(newNU);
+		}
+		else {
+		    LOGGER.log(Level.SEVERE, "User was not loaded from file");
 		}
 	    }
 	}

@@ -1,6 +1,8 @@
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Reads files.
@@ -13,12 +15,13 @@ public class ReadFile
      * @param fileName must be a string that exists in project folder.
      * @return a string with data from loaded file.
      */
+
+    private final static Logger LOGGER = Logger.getLogger(ReadFile.class.getName());
+
     public String readFiles(final String fileName) throws IOException {
 	System.out.println("READ: " + fileName);
 	File file = new File(fileName);
-	try {
-	    FileReader fileReader = new FileReader(file);
-
+	try (FileReader fileReader = new FileReader(file)){
 	    StringBuilder stringBuffer = new StringBuilder();
 	    int numCharsRead;
 	    int charSize = 2^10;
@@ -33,6 +36,7 @@ public class ReadFile
 	}
 	catch (IOException e) {
 	    e.printStackTrace();
+	    LOGGER.log(Level.SEVERE, "Could not read file");
 	}
 	throw new IOException("Could not read file" + fileName +".");
     }

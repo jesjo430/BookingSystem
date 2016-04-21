@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -142,7 +143,12 @@ public class WindowFrame extends JFrame
 	exit.addActionListener(new ActionListener()
 	{
 	    @Override public void actionPerformed(final ActionEvent e) {
-		quitSession();
+		try {
+		    quitSession();
+		} catch (FileNotFoundException e1) {
+		    e1.printStackTrace();
+		    LOGGER.log(Level.SEVERE, "Was not able to exit session.");
+		}
 	    }
 	});
 	panel.add(book);
@@ -310,13 +316,18 @@ public class WindowFrame extends JFrame
 	exitItem.setToolTipText("Exit application");
 	exitItem.addActionListener(new ActionListener() {
 	    @Override public void actionPerformed(ActionEvent event) {
-		quitSession();
+		try {
+		    quitSession();
+		} catch (FileNotFoundException e) {
+		    LOGGER.log(Level.SEVERE, "Was not able to exit session.");
+		    e.printStackTrace();
+		}
 	    }
 	});
 
 	menuBar.add(fileMenu);
 
-	if(user.getAuthorisation().equals("admin")) {
+	if(user.getAuthorisation().equals(Authorization.ADMIN)) {
 	    LOGGER.log(Level.INFO, "Admin-User was found.");
 	    JMenu editMenu = new JMenu("Edit");
 	    editMenu.setMnemonic('E');
@@ -493,18 +504,17 @@ public class WindowFrame extends JFrame
     /**
      * Exits program, saves the current eventList and userlist.
      */
-    private void quitSession() {
+    private void quitSession() throws FileNotFoundException {
 	if(openYesNoMessageBox("Exit program", "Are you sure you want to exit the client?")) {
 
-	    WriteFile wfE = new WriteFile(EventList.getINSTANCE().writeEventToFile(), Main.EVENT_TXT);
-	    WriteFile wfU = new WriteFile(UserList.getOurInstance().writeUserListToFile(), Main.USER_TXT);
+	    WriteFiles.writeFiles(EventList.getINSTANCE().writeEventToFile(), Main.EVENT_TXT);
+	    WriteFiles.writeFiles(UserList.getOurInstance().writeUserListToFile(), Main.USER_TXT);
 	    UserList.getOurInstance().writeUserListToFile();
 
-	    LOGGER.log(Level.INFO, String.format("EventList %s was written to file.", wfE));
-	    LOGGER.log(Level.INFO, String.format("UserList %s was written to file.", wfU));
+	    LOGGER.log(Level.INFO, "EventList was written to file.");
+	    LOGGER.log(Level.INFO, "UserList was written to file.");
 	    LOGGER.log(Level.INFO, "Session was closed.");
 	    System.exit(0);
-	    //fixme help...
 	}
     }
 

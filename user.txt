@@ -1,3 +1,4 @@
-User:'¤'j'j'admin'
-¤'jesper'jesper'normal'
-¤'natta'natta'normal'
+User:'¤'j'j'ADMIN'
+¤'jesper'jesper'NORMAL'
+¤'natta'natta'NORMAL'
+
