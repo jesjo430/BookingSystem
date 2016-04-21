@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
+import java.util.List;
 
 /**
  * Seat representation as a JComponent.
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 public class SeatComponent extends JComponent
 {
     private final Seat seat;
-    private static ArrayList<SeatComponent> markedSeats = new ArrayList<>();
+    private static List<SeatComponent> markedSeats = new ArrayList<>();
 
     private static final int CHAIR_SIZE = 20;
 
@@ -46,7 +47,7 @@ public class SeatComponent extends JComponent
 	markedSeats.add(seatC);
     }
 
-    public static ArrayList<SeatComponent> getMarkedSeats() {
+    public static List<SeatComponent> getMarkedSeats() {
     	return markedSeats;
         }
 

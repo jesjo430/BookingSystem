@@ -1,5 +1,5 @@
 /**
- * Normal user implements User.
+ * Normal user. Other Authorisation.
  */
 public class NormalUser implements User
 {
@@ -14,19 +14,19 @@ public class NormalUser implements User
 	addToUserList();
     }
 
-    public String getName() {
+    @Override public String getName() {
 	return name;
     }
 
-    public String getAuthorisation() {
+    @Override public String getAuthorisation() {
 	return authorisation;
     }
 
-    public String getPassword() {
+    @Override public String getPassword() {
 	return password;
     }
 
-    public void addToUserList() {
+    @Override public void addToUserList() {
 	UserList.getOurInstance().addToUserList(this);
     }
 }

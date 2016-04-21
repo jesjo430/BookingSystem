@@ -1,15 +1,17 @@
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * List over users, Singelton.
  */
 public final class UserList
 {
-    private List<User> userList;
-
+    private final static Logger LOGGER = Logger.getLogger(UserList.class.getName());
     private static UserList ourInstance = new UserList();
+    private List<User> userList;
 
     public static UserList getOurInstance() {
 	return ourInstance;
@@ -48,19 +50,9 @@ public final class UserList
 	    sb.append(user.getAuthorisation());
 	    sb.append("'\n");
 	}
-	new WriteFile(sb.toString(), "user.txt");
+	WriteFile wf = new WriteFile(sb.toString(), "user.txt");
+	LOGGER.log(Level.INFO, String.format("File %s was written to.", wf));
     }
-
-    public boolean doesUserNameExist(String user) {
-	for (User usr : userList) {
-	    if (usr.getName().equals(user)) {
-		return true;
-	    }
-	}
-	return false;
-    }
-
-    // FIXME: 21/04/16 users added twice.
 
     public void loadUserListFromFile() throws IOException {
 	ReadFile read = new ReadFile();

@@ -1,5 +1,5 @@
 /**
- * admin user
+ * Admin user. Other Authorisation.
  */
 public class AdminUser implements User
 {
@@ -8,7 +8,7 @@ public class AdminUser implements User
     private String password;
 
     public AdminUser(final String name, final String password) {
-    	this.name = name;
+	this.name = name;
     	this.password = password;
     	authorisation = "admin";
 	addToUserList();
@@ -26,7 +26,7 @@ public class AdminUser implements User
 	return password;
     }
 
-    public void addToUserList() {
-    	UserList.getOurInstance().addToUserList(this);
-        }
+    @Override public void addToUserList() {
+	UserList.getOurInstance().addToUserList(this);
+    }
 }
