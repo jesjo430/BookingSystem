@@ -15,12 +15,12 @@ public final class Main
     /**
      * String representing the text file (.txt) to save all events in.
      */
-    public static final String EVENT_TXT = "event.txt";
+    public static final String EVENT_TXT = "resources/datafiles/event.txt";
 
     /**
      * String representing the text file (.txt) to save all users in.
      */
-    public static final String USER_TXT = "user.txt";
+    public static final String USER_TXT = "resources/datafiles/user.txt";
 
     private Main() {}
 
@@ -46,15 +46,15 @@ public final class Main
 
     private static void initLogger() {
 	try {
-	    fileHandler = new FileHandler("systemlogger.log", false);
+	    fileHandler = new FileHandler("resources/systemlogger.log", false);
 	}
 	catch (SecurityException | IOException e) {
 	    e.printStackTrace();
 	}
 
-	Logger l = Logger.getLogger("logger");
+	Logger l = Logger.getLogger("");
 	fileHandler.setFormatter(new SimpleFormatter());
 	l.addHandler(fileHandler);
-	l.setLevel(Level.ALL);
+	l.setLevel(Level.CONFIG);
     }
 }

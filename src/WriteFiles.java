@@ -16,11 +16,9 @@ public final class WriteFiles
     }
 
     public static void writeFiles(String text, String fileName) throws FileNotFoundException {
-	System.out.println("WRITE");
 	try (PrintWriter out = new PrintWriter(fileName)){
 	    out.println(text);
 	    out.close();
-	    System.out.println(text);
 	}
 	catch (IOException ex) {
 	    LOGGER.log(Level.SEVERE, "Failed to write to file.");

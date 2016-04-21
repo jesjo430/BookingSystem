@@ -1,0 +1,50 @@
+Apr 21, 2016 4:54:23 PM sun.awt.X11.XToolkit setBackingStoreType
+CONFIG: The system property sun.awt.backingStore is not set, by default backingStore=NotUseful
+Apr 21, 2016 4:54:28 PM WindowFrame loginDialog
+INFO: currentUser was changed.
+Apr 21, 2016 4:54:28 PM WindowFrame addMenuBar
+INFO: Admin-User was found.
+Apr 21, 2016 4:54:29 PM Main main
+INFO: Window WindowFrame[frame0,0,24,0x0,invalid,hidden,layout=java.awt.BorderLayout,title=,resizable,normal,defaultCloseOperation=HIDE_ON_CLOSE,rootPane=javax.swing.JRootPane[,0,0,0x0,invalid,layout=javax.swing.JRootPane$RootLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=16777673,maximumSize=,minimumSize=,preferredSize=],rootPaneCheckingEnabled=true] is running.
+Apr 21, 2016 4:54:34 PM WindowFrame$3 valueChanged
+SEVERE: Value in eventSelectionPanel was changed but no changes has been done.
+Apr 21, 2016 4:54:34 PM WindowFrame$3 valueChanged
+INFO: A event in the eventlist was clicked.
+Apr 21, 2016 4:54:34 PM WindowFrame addMenuBar
+INFO: Admin-User was found.
+Apr 21, 2016 4:54:34 PM WindowFrame updateContentPane
+INFO: Contentpane updated.
+Apr 21, 2016 4:54:34 PM WindowFrame$3 valueChanged
+INFO: currentEvent has been changed.
+Apr 21, 2016 4:54:34 PM WindowFrame$3 valueChanged
+SEVERE: Value in eventSelectionPanel was changed but no changes has been done.
+Apr 21, 2016 4:54:34 PM WindowFrame$3 valueChanged
+SEVERE: Value in eventSelectionPanel was changed but no changes has been done.
+Apr 21, 2016 4:54:34 PM WindowFrame$3 valueChanged
+INFO: A event in the eventlist was clicked.
+Apr 21, 2016 4:54:34 PM WindowFrame addMenuBar
+INFO: Admin-User was found.
+Apr 21, 2016 4:54:35 PM WindowFrame updateContentPane
+INFO: Contentpane updated.
+Apr 21, 2016 4:54:35 PM WindowFrame$3 valueChanged
+INFO: currentEvent has been changed.
+Apr 21, 2016 4:54:35 PM WindowFrame$3 valueChanged
+SEVERE: Value in eventSelectionPanel was changed but no changes has been done.
+Apr 21, 2016 4:54:35 PM WindowFrame$3 valueChanged
+SEVERE: Value in eventSelectionPanel was changed but no changes has been done.
+Apr 21, 2016 4:54:35 PM WindowFrame$3 valueChanged
+INFO: A event in the eventlist was clicked.
+Apr 21, 2016 4:54:35 PM WindowFrame addMenuBar
+INFO: Admin-User was found.
+Apr 21, 2016 4:54:35 PM WindowFrame updateContentPane
+INFO: Contentpane updated.
+Apr 21, 2016 4:54:35 PM WindowFrame$3 valueChanged
+INFO: currentEvent has been changed.
+Apr 21, 2016 4:54:35 PM WindowFrame$3 valueChanged
+SEVERE: Value in eventSelectionPanel was changed but no changes has been done.
+Apr 21, 2016 4:54:39 PM WindowFrame quitSession
+INFO: EventList was written to file.
+Apr 21, 2016 4:54:39 PM WindowFrame quitSession
+INFO: UserList was written to file.
+Apr 21, 2016 4:54:39 PM WindowFrame quitSession
+INFO: Session was closed.

@@ -12,14 +12,11 @@ public class ReadFile
 {
     /**
      * Reads data from files.
-     * @param fileName must be a string that exists in project folder.
-     * @return a string with data from loaded file.
      */
 
     private final static Logger LOGGER = Logger.getLogger(ReadFile.class.getName());
 
     public String readFiles(final String fileName) throws IOException {
-	System.out.println("READ: " + fileName);
 	File file = new File(fileName);
 	try (FileReader fileReader = new FileReader(file)){
 	    StringBuilder stringBuffer = new StringBuilder();

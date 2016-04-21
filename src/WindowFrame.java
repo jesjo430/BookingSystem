@@ -536,7 +536,7 @@ public class WindowFrame extends JFrame
      * adds coded image as header on the contentpane.
      */
     private void addImageToPane() {
-	ImageIcon image = new ImageIcon("rodakvarn.jpg");
+	ImageIcon image = new ImageIcon("resources/images/rodakvarn.jpg");
 	assert image != null: "Header image not loaded!";
 	JLabel label = new JLabel("", image, SwingConstants.CENTER);
 	JPanel panel = new JPanel(new BorderLayout());
