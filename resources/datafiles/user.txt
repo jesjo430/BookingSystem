@@ -1,4 +1,3 @@
-User:'¤'j'j'ADMIN'
-¤'jesper'jesper'NORMAL'
-¤'natta'natta'NORMAL'
+User:'¤'admin'password'ADMIN'
+¤'normal'password'NORMAL'
 
