@@ -41,12 +41,12 @@ public final class Main
 	}
 
 	WindowFrame wf = new WindowFrame();
-	LOGGER.log(Level.INFO, "Window " + wf + " is running.");
+	assert wf != null : "WindowFrame	 not initialized";
     }
 
     private static void initLogger() {
 	try {
-	    fileHandler = new FileHandler("resources/systemlogger.log", false);
+	    fileHandler = new FileHandler("resources/system.log", false);
 	}
 	catch (SecurityException | IOException e) {
 	    e.printStackTrace();

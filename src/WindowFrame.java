@@ -23,9 +23,12 @@ public class WindowFrame extends JFrame
     private static final int EVENT_TITLE_FONT_SIZE = 25;
     private static final String WINDOW_TITLE = "Booking client";
     private static final Color FRAME_COLOR = Color.decode("#7E0D05");
+    private static final Color PANEL_COLOR = Color.LIGHT_GRAY;
+    private static final Color TEXT_COLOR = Color.BLACK;
 
     private final JFrame frame;
     private Event currentEvent;
+
     private SectionComponent sectionC;
     private JLabel freeSeats;
     private JLabel bookedSeats;
@@ -45,7 +48,7 @@ public class WindowFrame extends JFrame
 	sectionC  = currentEvent.getSectionC();
 
 	contents.setBackground(FRAME_COLOR);
-	contents.setLayout(new MigLayout("debug", "[grow][][][]","[grow][]"));
+	contents.setLayout(new MigLayout("", "[grow][][][]","[grow][]"));
 
 	loginDialog();
 	initContent();
@@ -63,6 +66,7 @@ public class WindowFrame extends JFrame
 	Container contents = frame.getContentPane();
 
 	JLabel eventTitle = new JLabel(currentEvent.getTitle());
+	eventTitle.setForeground(TEXT_COLOR);
 	Font titleFont = new Font("Times New Roman", Font.BOLD, EVENT_TITLE_FONT_SIZE);
 	eventTitle.setFont(titleFont);
 	addMenuBar();
@@ -71,7 +75,7 @@ public class WindowFrame extends JFrame
 
 	contents.add(eventTitle, "gap 100px, width 30, height 40, wrap");
 	contents.add(createSectionGrid(sectionC), "split 2, gap 20px");
-	contents.add(createEventSelectionPanel(), "top, gap 20px, span, wrap");
+	contents.add(createEventHandlingPanel(), "top, gap 20px, span, wrap");
 	contents.add(createInfoPanel(), "split 2, gap 25px");
 	contents.add(createButtons(), "gap 690px");
 
@@ -95,13 +99,12 @@ public class WindowFrame extends JFrame
    	    User currentUser = UserList.getOurInstance().getUserFromString(username.getText());
    	    if (!currentUser.getName().equals("false") && currentUser.getPassword().equals(password.getText())) {
 		user = currentUser;
-		LOGGER.log(Level.INFO, "currentUser was changed.");
 	    }
 
    	    else {
    		JOptionPane.showMessageDialog(null, "Incorrect Username or Password.");
    		loginDialog();
-		LOGGER.log(Level.INFO, "Failed to login.");
+		LOGGER.log(Level.WARNING, "Failed to login.");
 	    }
 	}
    	else {
@@ -115,6 +118,7 @@ public class WindowFrame extends JFrame
      */
     private JPanel createButtons() {
 	JPanel panel = new JPanel();
+	panel.setBackground(FRAME_COLOR);
 	JButton book = new JButton("Book");
 	book.addActionListener(new ActionListener()
 	{
@@ -133,7 +137,6 @@ public class WindowFrame extends JFrame
 		    openDefaultMessageBox("Your seat(s) has been booked!");
 		}
 		else { //if no seat was marked befor clicking book.
-		    LOGGER.log(Level.INFO, "No selection was made. --> No booking was executed.");
 		    openDefaultMessageBox("Please select a seat before booking.");
 		}
 	    }
@@ -160,9 +163,10 @@ public class WindowFrame extends JFrame
      * Generates a JPanel containing a selectable list with all Events.
      * @return JPanel with listeners and current Events.
      */
-    private JPanel createEventSelectionPanel() {
+    private JPanel createEventHandlingPanel() {
 	DefaultListModel<String> listModel = new DefaultListModel<>();
 	JList<String> eventList = new JList<>(listModel);
+	eventList.setBackground(PANEL_COLOR);
 
 	for (Event e : EventList.getINSTANCE().getEventList()) {
 	    listModel.addElement(e.getTitle());
@@ -172,7 +176,6 @@ public class WindowFrame extends JFrame
 	    @Override public void valueChanged(ListSelectionEvent e)
 	    {
 	        if(!e.getValueIsAdjusting()) {
-		    LOGGER.log(Level.INFO, "A event in the eventlist was clicked.");
 		    List<String> selectedValuesList = eventList.getSelectedValuesList();
 
 		    Event newEvent = getEventFromString(selectedValuesList.get(0)); //the first and only element.
@@ -180,17 +183,20 @@ public class WindowFrame extends JFrame
 		    currentEvent.getSection().unmarkAllSeats();
 		    currentEvent = newEvent;
 		    updateContentPane(newSectionComponent);
-		    LOGGER.log(Level.INFO, "currentEvent has been changed.");
 	        }
-		LOGGER.log(Level.SEVERE, "Value in eventSelectionPanel was changed but no changes has been done.");
 	    }
 	});
 
 	eventList.setSelectionBackground(Color.GRAY);
-	JPanel infoPanel = new JPanel(new MigLayout("debug, gap 20px"));
+	JPanel infoPanel = new JPanel(new MigLayout(""));
 	infoPanel.setBackground(FRAME_COLOR);
+
+	JLabel title = new JLabel("Events: ");
+	title.setForeground(TEXT_COLOR);
+
+	infoPanel.add(title, "wrap");
 	infoPanel.add(eventList, "wrap");
-	infoPanel.add(frame.getContentPane().add(createEventInfoPanel(currentEvent)), "width 300");
+	infoPanel.add(createEventInfoPanel(), "width 300, gaptop 20");
 
 	return infoPanel;
     }
@@ -204,7 +210,6 @@ public class WindowFrame extends JFrame
 	sectionC = sectionComponent;
 	initContent();
 	frame.repaint();
-	LOGGER.log(Level.INFO, "Contentpane updated.");
     }
 
     /**
@@ -276,6 +281,7 @@ public class WindowFrame extends JFrame
      */
     private JPanel createInfoPanel() {
 	JPanel infoPanel = new JPanel();
+	infoPanel.setBackground(PANEL_COLOR);
 	infoPanel.setLayout(new MigLayout());
 
 	freeSeats = new JLabel("Free: " + currentEvent.getSection().getAmountOfFreeSeats());
@@ -287,15 +293,28 @@ public class WindowFrame extends JFrame
 	return infoPanel;
     }
 
-    private JPanel createEventInfoPanel(Event event) {
+    private JPanel createEventInfoPanel() {
 	JPanel eventPanel = new JPanel();
+	eventPanel.setBackground(PANEL_COLOR);
 	eventPanel.setLayout(new MigLayout());
 
-	JLabel title = new JLabel(event.getTitle());
+	JLabel title = new JLabel("Event Info");
+
 	JTextArea infoArea = new JTextArea();
+	infoArea.setBackground(PANEL_COLOR);
+
+	infoArea.setText("Title: " + currentEvent.getTitle() + " \n" +
+			 "Starttime: " + currentEvent.getTime() + "\n" +
+			"Date: " + currentEvent.getDate());
+
+	JLabel info = new JLabel("Summary:");
+	JTextArea summary = new JTextArea("No summary avalible. \n yet... but the design is nice."); // to fill with info about the event, when I have time...
+	summary.setBackground(PANEL_COLOR);
 
 	eventPanel.add(title, "wrap");
-	eventPanel.add(infoArea, "growx, growy");
+	eventPanel.add(infoArea, "wrap");
+	eventPanel.add(info, "wrap");
+	eventPanel.add(summary, "height 280");
 
 	return eventPanel;
     }
@@ -343,7 +362,6 @@ public class WindowFrame extends JFrame
 	menuBar.add(fileMenu);
 
 	if(user.getAuthorisation().equals(Authorization.ADMIN)) {
-	    LOGGER.log(Level.INFO, "Admin-User was found.");
 	    JMenu editMenu = new JMenu("Edit");
 	    editMenu.setMnemonic('E');
 
@@ -377,7 +395,6 @@ public class WindowFrame extends JFrame
 			frame.getContentPane().removeAll();
 			initContent();
 			openDefaultMessageBox(currentEvent.getTitle() + " has been cleared from all bookings.");
-			LOGGER.log(Level.INFO, "All bookings in event: " + currentEvent + " was removed.");
 		    }
 		}
 	    });
@@ -397,7 +414,6 @@ public class WindowFrame extends JFrame
 	instructionsItem.setToolTipText("Instructions");
 	instructionsItem.addActionListener(new ActionListener() {
 	    @Override public void actionPerformed(ActionEvent event) {
-		LOGGER.log(Level.INFO, "Instructions was not avalible.");
 		JOptionPane.showMessageDialog(frame, "Sorry, no instructions avalible.");
 	    }
 	});
@@ -425,7 +441,6 @@ public class WindowFrame extends JFrame
 	JTextField sectionw = new JTextField(5);
 
 	if (event != null) { //if there is any current event.
-	    LOGGER.log(Level.INFO, "Added info about old event to new event dialog.");
 	    title.setText(event.getTitle());
 	    date.setText(event.getDate());
 	    time.setText(event.getTime());
@@ -454,10 +469,8 @@ public class WindowFrame extends JFrame
 						   Integer.parseInt(sectionw.getText())),
 				       title.getText(), time.getText(), date.getText());
 	    EventList.getINSTANCE().addToEventList(newEvent);
-	    LOGGER.log(Level.INFO, "A new event " + newEvent + " was created.");
 	    if (event != null) { //if there is any current event. to save the old sections data (bookings).
 		newEvent.setSectionC(event.getSectionC());
-		LOGGER.log(Level.INFO, "The event " + newEvent + " was given its old sectionComponent.");
 	    }
 	    openDefaultMessageBox(currentEvent.getTitle() + " has been saved.");
 	}
@@ -526,9 +539,6 @@ public class WindowFrame extends JFrame
 	    WriteFiles.writeFiles(UserList.getOurInstance().writeUserListToFile(), Main.USER_TXT);
 	    UserList.getOurInstance().writeUserListToFile();
 
-	    LOGGER.log(Level.INFO, "EventList was written to file.");
-	    LOGGER.log(Level.INFO, "UserList was written to file.");
-	    LOGGER.log(Level.INFO, "Session was closed.");
 	    System.exit(0);
 	}
     }
