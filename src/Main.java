@@ -41,7 +41,7 @@ public final class Main
 	}
 
 	WindowFrame wf = new WindowFrame();
-	assert wf != null : "WindowFrame	 not initialized";
+	assert wf != null : "WindowFrame not initialized";
     }
 
     private static void initLogger() {
