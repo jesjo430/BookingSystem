@@ -1,2 +1,4 @@
-Apr 29, 2016 12:22:16 PM sun.awt.X11.XToolkit setBackingStoreType
+Apr 29, 2016 4:06:55 PM sun.awt.X11.XToolkit setBackingStoreType
 CONFIG: The system property sun.awt.backingStore is not set, by default backingStore=NotUseful
+Apr 29, 2016 4:09:43 PM WindowFrame openNewEventDialog
+SEVERE: The new Event was not saved!

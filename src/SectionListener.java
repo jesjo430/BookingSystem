@@ -14,14 +14,24 @@ public class SectionListener extends MouseAdapter
     @Override public void mousePressed(final MouseEvent e) {
 	SeatComponent seatC = (SeatComponent) e.getSource();
 
-	if (!seatC.getSeat().getStatus()){
+	if(WindowFrame.isUnbooking) {
+	    if(!seatC.getSeat().getStatus()) {
+		seatC.getSeat().setStatus(true);
+		seatC.repaint();
+	    }
+	    else {
+		seatC.getSeat().setStatus(false);
+		seatC.repaint();
+	    }
+
+	}
+	else if (!seatC.getSeat().getStatus()) {
 	    if (seatC.seatInMarkedSeatList(seatC)) {
 		seatC.getSeat().setSeatIsMarked(false);
 		seatC.removeFromMarkedList(seatC);
 	    } else {
 		seatC.getSeat().setSeatIsMarked(true);
 		seatC.addToMarkedList(seatC);
-		System.out.println("Clicked");
 	    }
 	    seatC.repaint();
 	}

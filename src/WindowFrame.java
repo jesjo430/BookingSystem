@@ -35,6 +35,11 @@ public class WindowFrame extends JFrame
     private JLabel bookedSeats;
 
     /**
+     * detiermines if unbooking dialog is active. used in actionlistener.
+     */
+    public static boolean isUnbooking = false;
+
+    /**
      * The current active user.
      */
     public User user = null;
@@ -343,6 +348,7 @@ public class WindowFrame extends JFrame
 	JMenuItem exitItem = new JMenuItem("Quit");
 	JMenuItem newEvent = new JMenuItem("New event");
 	JMenuItem editEvent = new JMenuItem("Edit event");
+	JMenuItem editSection = new JMenuItem("Edit section");
 	JMenuItem clearSection = new JMenuItem("Clear bookings");
 	JMenuItem newUser = new JMenuItem("New user");
 	JMenuItem editUser = new JMenuItem("Edit user");
@@ -411,6 +417,14 @@ public class WindowFrame extends JFrame
 		}
 	    });
 
+	    editSection.setAccelerator(KeyStroke.getKeyStroke('S', InputEvent.CTRL_DOWN_MASK));
+	    editSection.addActionListener(new ActionListener()
+	    {
+		@Override public void actionPerformed(final ActionEvent e) {
+		    openEditSectionDialog();
+		}
+	    });
+
 	    //users
 	    JMenu userMenu = new JMenu("User");
 	    editMenu.setMnemonic('U');
@@ -442,6 +456,7 @@ public class WindowFrame extends JFrame
 
 	    editMenu.add(editEvent);
 	    sectionMenu.add(clearSection);
+	    sectionMenu.add(editSection);
 	    editMenu.add(newEvent);
 
 	    menuBar.add(editMenu);
@@ -473,6 +488,21 @@ public class WindowFrame extends JFrame
 	menuBar.add(helpMenu);
 	frame.setJMenuBar(menuBar);
     }
+
+    private void openEditSectionDialog() {
+	JPanel panel = new JPanel(new MigLayout());
+	String windowTitle = "Edit section" + currentEvent.getTitle() + ".";
+	panel.add(new JLabel("Click on the seat you would like to unbook."), "wrap");
+	panel.add(createSectionGrid(currentEvent.getSectionC()));
+	isUnbooking = true;
+	int result = JOptionPane.showConfirmDialog(null, panel, windowTitle, JOptionPane.OK_CANCEL_OPTION);
+	if (result == JOptionPane.OK_OPTION) {
+	    openDefaultMessageBox("Your changes has been done!");
+	    isUnbooking = false;
+	    updateContentPane(currentEvent.getSectionC());
+	}
+    }
+
 
     /**
      * Creates and opens a Dialogbox with inputs for a new event, its parameters.

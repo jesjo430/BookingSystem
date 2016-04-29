@@ -1,4 +1,4 @@
 User:'¤'admin'password'ADMIN'
 ¤'normal'password'NORMAL'
-¤'jesper'pass'ADMIN'
+¤'jesper'pass'NORMAL'
 
