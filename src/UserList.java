@@ -37,6 +37,10 @@ public final class UserList
 	return new User("false", "false", null);
     }
 
+    public void removeUserFromList(User user) {
+	userList.remove(user);
+    }
+
     public String writeUserListToFile() {
 	StringBuilder sb = new StringBuilder();
 	sb.append("User:'");
@@ -76,6 +80,10 @@ public final class UserList
 		}
 	    }
 	}
+    }
+
+    public List<User> getUserList() {
+	return userList;
     }
 }
 

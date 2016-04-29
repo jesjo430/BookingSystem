@@ -9,6 +9,7 @@ import java.awt.event.InputEvent;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -66,18 +67,21 @@ public class WindowFrame extends JFrame
 	Container contents = frame.getContentPane();
 
 	JLabel eventTitle = new JLabel(currentEvent.getTitle());
+	JLabel userInfoLabel = new JLabel("Loged in as: " + user.getName());
+
 	eventTitle.setForeground(TEXT_COLOR);
 	Font titleFont = new Font("Times New Roman", Font.BOLD, EVENT_TITLE_FONT_SIZE);
 	eventTitle.setFont(titleFont);
 	addMenuBar();
 
 	addImageToPane();
-
 	contents.add(eventTitle, "gap 100px, width 30, height 40, wrap");
 	contents.add(createSectionGrid(sectionC), "split 2, gap 20px");
 	contents.add(createEventHandlingPanel(), "top, gap 20px, span, wrap");
 	contents.add(createInfoPanel(), "split 2, gap 25px");
-	contents.add(createButtons(), "gap 690px");
+	contents.add(createButtons(), "gap 690px, wrap");
+	contents.add(userInfoLabel);
+
 
 	frame.pack();
 	frame.setVisible(true);
@@ -330,7 +334,7 @@ public class WindowFrame extends JFrame
     /**
      * Adds a manubar to the menubararea in the frame.
      */
-    private void addMenuBar() {
+    public void addMenuBar() {
 	JMenuBar menuBar = new JMenuBar();
 	JMenu fileMenu, helpMenu;
 
@@ -340,6 +344,9 @@ public class WindowFrame extends JFrame
 	JMenuItem newEvent = new JMenuItem("New event");
 	JMenuItem editEvent = new JMenuItem("Edit event");
 	JMenuItem clearSection = new JMenuItem("Clear bookings");
+	JMenuItem newUser = new JMenuItem("New user");
+	JMenuItem editUser = new JMenuItem("Edit user");
+	JMenuItem removeUser = new JMenuItem("Remove user");
 	JMenuItem instructionsItem = new JMenuItem("Instructions");
 
 	fileMenu = new JMenu("File");
@@ -361,6 +368,9 @@ public class WindowFrame extends JFrame
 
 	menuBar.add(fileMenu);
 
+	/**
+	 * spcial added for admin users.
+	 */
 	if(user.getAuthorisation().equals(Authorization.ADMIN)) {
 	    JMenu editMenu = new JMenu("Edit");
 	    editMenu.setMnemonic('E');
@@ -399,12 +409,45 @@ public class WindowFrame extends JFrame
 		}
 	    });
 
+	    JMenu userMenu = new JMenu("User");
+	    editMenu.setMnemonic('U');
+
+	    newUser.setAccelerator(KeyStroke.getKeyStroke('N', InputEvent.CTRL_DOWN_MASK));
+	    newUser.addActionListener(new ActionListener()
+	    {
+		@Override public void actionPerformed(final ActionEvent e) {
+		    openNewUserDialog(null, "Create new user");
+	   		}
+	    });
+
+	    editUser.setAccelerator(KeyStroke.getKeyStroke('E', InputEvent.CTRL_DOWN_MASK));
+	    editUser.addActionListener(new ActionListener()
+	    {
+		@Override public void actionPerformed(final ActionEvent e) {
+		    openEditUserDialog();
+		}
+	    });
+
+	    removeUser.setAccelerator(KeyStroke.getKeyStroke('R', InputEvent.CTRL_DOWN_MASK));
+	    removeUser.addActionListener(new ActionListener()
+	    {
+		@Override public void actionPerformed(final ActionEvent e) {
+		    openRemoveUserDialog();
+		}
+	    });
+
+
 	    editMenu.add(editEvent);
 	    sectionMenu.add(clearSection);
 	    editMenu.add(newEvent);
 
 	    menuBar.add(editMenu);
 	    menuBar.add(sectionMenu);
+
+	    userMenu.add(newUser);
+	    userMenu.add(editUser);
+	    userMenu.add(removeUser);
+	    menuBar.add(userMenu);
 	}
 
 	helpMenu = new JMenu("Help");
@@ -510,6 +553,103 @@ public class WindowFrame extends JFrame
 			       findEventFromString(event.get(marked)));
 	    EventList.getINSTANCE().removeFromEventList(findEventFromString(event.get(marked)));
 	    updateContentPane(currentEvent.getSectionC());
+	}
+    }
+
+    private void openRemoveUserDialog() {
+	String windowTitle = "Edit event";
+	JPanel myPanel = new JPanel(new MigLayout());
+	StringBuilder sb = new StringBuilder();
+
+	for (User user : UserList.getOurInstance().getUserList()) {
+	    sb.append(user.getName());
+	    sb.append("'");
+	}
+
+	String sbToString = sb.toString();
+	Collection<String> users = new ArrayList<>(Arrays.asList(sbToString.split("'")));
+	JList<Object> userList = new JList<>(users.toArray());
+
+	myPanel.add(new JLabel("Select the user you want to edit: "), "wrap");
+	myPanel.add(userList, "width 250");
+
+	int result = JOptionPane.showConfirmDialog(null, myPanel, windowTitle, JOptionPane.OK_CANCEL_OPTION);
+	if (result == JOptionPane.OK_OPTION) {
+	    String userString = userList.getSelectedValue().toString();
+	    User user = UserList.getOurInstance().getUserFromString(userString);
+	    UserList.getOurInstance().removeUserFromList(user);
+	    openDefaultMessageBox("The user " + user.getName() + " has been removed");
+	}
+    }
+
+    private void openNewUserDialog(User user, String wt) {
+	JTextField name = new JTextField(5);
+	JTextField password = new JTextField(5);
+
+	JList<Object> authorizationField = new JList<>(Authorization.values());
+
+	authorizationField.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+	authorizationField.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+	authorizationField.setVisibleRowCount(-1);
+
+	JScrollPane listScroller = new JScrollPane(authorizationField);
+
+	if (user != null) { //if user is given.
+	    name.setText(user.getName());
+	    password.setText(user.getPassword());
+	}
+
+	JPanel myPanel = new JPanel();
+	myPanel.setLayout(new MigLayout());
+	myPanel.add(new JLabel("Name:"));
+	myPanel.add(name, "wrap");
+	myPanel.add(new JLabel("Password:"));
+	myPanel.add(password, "wrap");
+	myPanel.add(new JLabel("Active users:"));
+	myPanel.add(listScroller, "wrap");
+
+	int result = JOptionPane.showConfirmDialog(null, myPanel, wt, JOptionPane.OK_CANCEL_OPTION);
+	if (result == JOptionPane.OK_OPTION) {
+	    Authorization selectedAuthorization = (Authorization) authorizationField.getSelectedValue();
+	    if (user == null) {
+		User newUser = new User(name.getText(), password.getText(), selectedAuthorization);
+		UserList.getOurInstance().addToUserList(newUser);
+		openDefaultMessageBox("The new user " + newUser.getName() + " was created.");
+	    }
+	    else {
+		user.setName(name.getText());
+		user.setPassword(password.getText());
+		user.setAuthorisation(selectedAuthorization);
+		UserList.getOurInstance().removeUserFromList(user);
+		UserList.getOurInstance().addToUserList(user);
+
+		openDefaultMessageBox("The user " + user.getName() + " was changed.");
+	    }
+	}
+    }
+
+    private void openEditUserDialog() {
+	String windowTitle = "Edit users";
+	JPanel myPanel = new JPanel(new MigLayout());
+	StringBuilder sb = new StringBuilder();
+
+	for (User user : UserList.getOurInstance().getUserList()) {
+	    sb.append(user.getName());
+	    sb.append("'");
+	}
+
+	String sbToString = sb.toString();
+	Collection<String> users = new ArrayList<>(Arrays.asList(sbToString.split("'")));
+	JList<Object> eventList = new JList<>(users.toArray());
+
+	myPanel.add(new JLabel("Select the user you want to edit: "), "wrap");
+	myPanel.add(eventList, "width 250");
+
+	int result = JOptionPane.showConfirmDialog(null, myPanel, windowTitle, JOptionPane.OK_CANCEL_OPTION);
+	if (result == JOptionPane.OK_OPTION) {
+	    String userString = eventList.getSelectedValue().toString();
+	    User user = UserList.getOurInstance().getUserFromString(userString);
+	    openNewUserDialog(user, "Edit user " + user.getName());
 	}
     }
 

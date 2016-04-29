@@ -24,4 +24,16 @@ public class User
     public String getPassword() {
 	return password;
     }
+
+    public void setName(final String name) {
+	this.name = name;
+    }
+
+    public void setAuthorisation(final Authorization authorisation) {
+	this.authorisation = authorisation;
+    }
+
+    public void setPassword(final String password) {
+	this.password = password;
+    }
 }
