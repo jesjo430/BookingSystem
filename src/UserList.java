@@ -82,7 +82,7 @@ public final class UserList
 	}
     }
 
-    public List<User> getUserList() {
+    public Iterable<User> getUserList() {
 	return userList;
     }
 }

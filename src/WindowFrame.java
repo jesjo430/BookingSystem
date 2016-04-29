@@ -372,6 +372,7 @@ public class WindowFrame extends JFrame
 	 * spcial added for admin users.
 	 */
 	if(user.getAuthorisation().equals(Authorization.ADMIN)) {
+	    //edit
 	    JMenu editMenu = new JMenu("Edit");
 	    editMenu.setMnemonic('E');
 
@@ -391,6 +392,7 @@ public class WindowFrame extends JFrame
 		}
 	    });
 
+	    //section
 	    JMenu sectionMenu = new JMenu("Section");
 	    sectionMenu.setMnemonic('S');
 
@@ -409,6 +411,7 @@ public class WindowFrame extends JFrame
 		}
 	    });
 
+	    //users
 	    JMenu userMenu = new JMenu("User");
 	    editMenu.setMnemonic('U');
 
