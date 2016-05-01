@@ -506,11 +506,11 @@ public class WindowFrame extends JFrame
 	String windowTitle = "Edit section" + currentEvent.getTitle() + ".";
 	panel.add(new JLabel("Click on the seat you would like to unbook."), "wrap");
 	panel.add(createSectionGrid(currentEvent.getSectionC()));
-	isUnbooking = true;
+	isUnbooking = true; // the easiest way to change them, error percieved but ignored. this cont cast any problems
 	int result = JOptionPane.showConfirmDialog(null, panel, windowTitle, JOptionPane.OK_CANCEL_OPTION);
 	if (result == JOptionPane.OK_OPTION) {
 	    openDefaultMessageBox("Your changes has been done!");
-	    isUnbooking = false; // the easiest way to change them, error percieved but ignored.
+	    isUnbooking = false; // the easiest way to change them, error percieved but ignored. this cont cast any problems
 	    updateContentPane(currentEvent.getSectionC());
 	}
     }
