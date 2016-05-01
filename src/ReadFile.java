@@ -10,12 +10,14 @@ import java.util.logging.Logger;
 
 public class ReadFile
 {
-    /**
-     * Reads data from files.
-     */
-
     private final static Logger LOGGER = Logger.getLogger(ReadFile.class.getName());
 
+    /**
+     * Reads data from file.
+     * @param fileName string of file to read from.
+     * @return content of file as string.
+     * @throws IOException if no file found.
+     */
     public String readFiles(final String fileName) throws IOException {
 	File file = new File(fileName);
 	try (FileReader fileReader = new FileReader(file)){

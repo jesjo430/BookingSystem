@@ -1,5 +1,5 @@
 /**
- *
+ * Enumclass for different authorizations in users.
  */
 public enum Authorization
 {

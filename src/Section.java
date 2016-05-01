@@ -15,6 +15,9 @@ public class Section
 	initialize();
     }
 
+    /**
+     * creates the section as Seat[][]
+     */
     private void initialize() {
 	seats = new Seat[height][width];
 	for (int h = 0; h < seats.length; h++) {
@@ -36,10 +39,18 @@ public class Section
 	return seats;
     }
 
+    /**
+     * @param row int
+     * @param seat int
+     * @return seat object at point.
+     */
     public Seat getSeatAt(int row, int seat) {
 	return seats[row][seat];
     }
 
+    /**
+     * @return amount of seats with status as false
+     */
     public int getAmountOfFreeSeats() {
 	int amount = 0;
 	for (Seat[] row : seats) {
@@ -56,6 +67,9 @@ public class Section
 	return totalSeats;
     }
 
+    /**
+     * Changes the status of every seat to false.
+     */
     public void unBookAllSeats() {
 	for (Seat[] row : seats) {
 	    for (Seat seat : row) {
@@ -65,6 +79,9 @@ public class Section
 	}
     }
 
+    /**
+     * sets all seats marked fields to false.
+     */
     public void unmarkAllSeats() {
 	for (Seat[] row : seats) {
 	    for (Seat seat : row) {

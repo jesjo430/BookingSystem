@@ -2,7 +2,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 /**
- * Listnera
+ * Listeners to sections.
  */
 
 public class SectionListener extends MouseAdapter

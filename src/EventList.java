@@ -4,6 +4,7 @@ import java.util.List;
 
 /**
  * Singelton with all events.
+ * Static, only one object created at init.
  */
 
 public final class EventList

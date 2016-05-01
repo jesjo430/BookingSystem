@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 /**
  * List over users, Singelton.
+ * Static, only one object created at init.
  */
 public final class UserList
 {
@@ -60,6 +61,10 @@ public final class UserList
 	return sb.toString();
     }
 
+    /**
+     * loads all user from file: Main.USER_TXT
+     * @throws IOException if file not found.
+     */
     public void loadUserListFromFile() throws IOException {
 	ReadFile read = new ReadFile();
 	String readUserString = read.readFiles(Main.USER_TXT);

@@ -13,6 +13,9 @@ public class SectionComponent extends JComponent
 	this.section = section;
     }
 
+    /**
+     * returns the given Color from specific seat at specific section.
+     */
     private Color getSeatColorAt(int y, int x, Section section) {
 	if (section.getSeats()[y][x].getStatus()) {
 	    return Color.PINK;

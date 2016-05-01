@@ -21,6 +21,12 @@ public class WindowFrame extends JFrame
 {
     private final static Logger LOGGER = Logger.getLogger(WindowFrame.class.getName());
 
+    /**
+     * static fields belngs to WindowFrame
+     * and are used a globals for further
+     * development where other classes uses
+     * or will use these constants.
+     */
     private static final int EVENT_TITLE_FONT_SIZE = 25;
     private static final String WINDOW_TITLE = "Booking client";
     private static final Color FRAME_COLOR = Color.decode("#7E0D05");
@@ -92,6 +98,9 @@ public class WindowFrame extends JFrame
 	frame.setVisible(true);
     }
 
+    /**
+     * creates a loginfbox and checks input details against userlist.
+     */
     private void loginDialog() {
    	JPanel myPanel = new JPanel();
    	myPanel.setLayout(new MigLayout());
@@ -339,7 +348,7 @@ public class WindowFrame extends JFrame
     /**
      * Adds a manubar to the menubararea in the frame.
      */
-    public void addMenuBar() {
+    public void addMenuBar() { // Method could be extraxted to smaller methods but I prefer it this way.
 	JMenuBar menuBar = new JMenuBar();
 	JMenu fileMenu, helpMenu;
 
@@ -489,6 +498,9 @@ public class WindowFrame extends JFrame
 	frame.setJMenuBar(menuBar);
     }
 
+    /**
+     * Opens a dialogbox with the section to be edited. saved if ok.
+     */
     private void openEditSectionDialog() {
 	JPanel panel = new JPanel(new MigLayout());
 	String windowTitle = "Edit section" + currentEvent.getTitle() + ".";
@@ -589,6 +601,9 @@ public class WindowFrame extends JFrame
 	}
     }
 
+    /**
+     * Dialogbox asking for removal of user.
+     */
     private void openRemoveUserDialog() {
 	String windowTitle = "Edit event";
 	JPanel myPanel = new JPanel(new MigLayout());
@@ -615,6 +630,11 @@ public class WindowFrame extends JFrame
 	}
     }
 
+    /**
+     * Opens a dialogbox that creates a new user or if "user" null, can eidt existing user.
+     * @param user can be set to null if creation of new user.
+     * @param wt dialogwindow title.
+     */
     private void openNewUserDialog(User user, String wt) {
 	JTextField name = new JTextField(5);
 	JTextField password = new JTextField(5);
@@ -661,6 +681,9 @@ public class WindowFrame extends JFrame
 	}
     }
 
+    /**
+     * Opens window to select what user do edit.
+     */
     private void openEditUserDialog() {
 	String windowTitle = "Edit users";
 	JPanel myPanel = new JPanel(new MigLayout());

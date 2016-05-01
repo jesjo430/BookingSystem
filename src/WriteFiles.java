@@ -15,6 +15,12 @@ public final class WriteFiles
     private WriteFiles() {
     }
 
+    /**
+     * writes string to given file.
+     * @param text string to write.
+     * @param fileName name of new file to write on.
+     * @throws FileNotFoundException
+     */
     public static void writeFiles(String text, String fileName) throws FileNotFoundException {
 	try (PrintWriter out = new PrintWriter(fileName)){
 	    out.println(text);

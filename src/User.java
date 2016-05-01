@@ -1,5 +1,5 @@
 /**
- * Normal user. Other Authorisation.
+ * Users datatype.
  */
 public class User
 {
