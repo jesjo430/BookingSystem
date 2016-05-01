@@ -510,7 +510,7 @@ public class WindowFrame extends JFrame
 	int result = JOptionPane.showConfirmDialog(null, panel, windowTitle, JOptionPane.OK_CANCEL_OPTION);
 	if (result == JOptionPane.OK_OPTION) {
 	    openDefaultMessageBox("Your changes has been done!");
-	    isUnbooking = false;
+	    isUnbooking = false; // the easiest way to change them, error percieved but ignored.
 	    updateContentPane(currentEvent.getSectionC());
 	}
     }
